@@ -6,9 +6,11 @@ import '@vue/runtime-core'
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
     Card: typeof import('./src/components/Card.vue')['default']
+    CardArea: typeof import('./src/components/battle/CardArea.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    Stage: typeof import('./src/components/battle/Stage.vue')['default']
   }
 }
 

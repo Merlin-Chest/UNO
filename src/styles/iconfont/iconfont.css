@@ -1,0 +1,102 @@
+
+@font-face {
+  font-family: "Iconify Explorer Font";
+  src: url("./iconfont.eot");
+  src: url("./iconfont.eot") format("embedded-opentype"),
+       url("./iconfont.ttf") format("truetype"),
+       url("./iconfont.woff") format("woff"),
+       url("./iconfont.woff2") format("woff2"),
+       url("./iconfont.svg") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+.i {
+  font-family: "Iconify Explorer Font" !important;
+  font-size: 1em;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+
+.i.fa6-brands\:yammer:before {
+content: "\e001";
+}
+
+.i.fa6-solid\:0:before {
+content: "\e002";
+}
+
+.i.fa6-solid\:1:before {
+content: "\e003";
+}
+
+.i.fa6-solid\:2:before {
+content: "\e004";
+}
+
+.i.fa6-solid\:3:before {
+content: "\e005";
+}
+
+.i.fa6-solid\:4:before {
+content: "\e006";
+}
+
+.i.fa6-solid\:5:before {
+content: "\e007";
+}
+
+.i.fa6-solid\:6:before {
+content: "\e008";
+}
+
+.i.fa6-solid\:7:before {
+content: "\e009";
+}
+
+.i.fa6-solid\:8:before {
+content: "\e00a";
+}
+
+.i.fa6-solid\:9:before {
+content: "\e00b";
+}
+
+.i.fa6-solid\:arrow-right-arrow-left:before {
+content: "\e00c";
+}
+
+.i.fa6-solid\:bahai:before {
+content: "\e00d";
+}
+
+.i.fa6-solid\:ban:before {
+content: "\e00e";
+}
+
+.i.fa6-solid\:clone:before {
+content: "\e00f";
+}
+
+.i.fa6-solid\:palette:before {
+content: "\e010";
+}
+
+.i.pixelarticons\:dashbaord:before {
+content: "\e011";
+}
+
+.i.pixelarticons\:downasaur:before {
+content: "\e012";
+}
+
+.i.pixelarticons\:sort:before {
+content: "\e013";
+}
+
+.i.subway\:four-box:before {
+content: "\e014";
+}
+
