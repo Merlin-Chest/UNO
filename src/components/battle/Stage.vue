@@ -1,8 +1,8 @@
 <template>
-    <div flex flex-col items-center justify="between" overflow="hidden"
-        border="dashed 4 rounded-4 cool-gray-300" w-240 h-150 m="auto">
+    <div flex flex-col items-center justify="between" overflow="hidden" border="dashed 4 rounded-4 cool-gray-300" w-240
+        h-150 m="auto">
         <div w="1000px" h="200px"></div>
-        <CardArea w="90%" :cards="cards"></CardArea>
+        <CardArea w="90%"></CardArea>
     </div>
 </template>
 
@@ -11,10 +11,10 @@ import { useGameStore } from '~/store/game';
 
 
 const store = useGameStore();
-store.getGameCards();
-store.getNewCards(6);
-const cards = computed(()=>store.userCards)
-console.log('cards:', cards)
+onBeforeMount(() => {
+    store.resetGameData()
+    store.getGameCards();
+})
 </script>
 
 <style scoped>

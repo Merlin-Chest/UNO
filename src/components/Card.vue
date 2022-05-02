@@ -5,7 +5,8 @@ const props = withDefaults(defineProps<CardProps>(), {
   color: '',
   icon: '',
 })
-
+const isActive = ref(false);
+const emit = defineEmits(['selectCard', 'unSelectCard']);
 // const content = computed(() => {
 //   if (props.type.startsWith('number-'))
 //     return props.type.replace('number-', '')
@@ -14,12 +15,19 @@ const props = withDefaults(defineProps<CardProps>(), {
 
 const bgColor = computed(() => `${props.color}`)
 const iconClass = computed(() => `i ${props.icon}`)
+const containerClass = computed(() => isActive.value ? 'container translate-y--8' : 'container')
+
+const handleClick = () => {
+  emit(isActive ? 'selectCard' : 'unSelectCard')
+  isActive.value = !isActive.value
+}
 </script>
 
 <template>
-  <div class="container" w-30 h-40 inline-block flex justify-between hover="translate-y--8">
-    <i :class="iconClass" m="l-2" />
-    <i :class="iconClass" lh="70" />
+  <div :class="containerClass" transition="duration-150" w-30 h-40 inline-block flex justify-between
+    hover="translate-y--8" @click="handleClick">
+    <i :class="iconClass" m="l-2 t-1" />
+    <i :class="iconClass" lh="70" m="r-2" />
   </div>
 </template>
 
