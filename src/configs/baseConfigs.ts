@@ -1,21 +1,27 @@
-const colorList = ['red', 'green', 'blue', 'yellow']
+import { genArr0To9, genArr1To9 } from '~/utils'
 
-export const cardInfomation = [
-  ...[...[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
+const colorList = ['#FF6666', '#99CC66', '#99CCFF', '#FFCC33']
+
+export const cardInfomation = () => [
+  ...[...[...genArr0To9, ...genArr1To9].map((i) => {
     return {
       type: `number-${i}`,
+      icon: `i-fa6-solid-${i}`,
     }
   }),
-  {
+  ...new Array(2).fill([{
     type: 'exchange',
+    icon: 'i-fa6-solid-arrow-right-arrow-left',
   },
   {
     type: 'ban',
+    icon: 'i-fa6-solid-ban',
   },
 
   {
     type: 'add-2',
-  }].map((item) => {
+    icon: 'i-fa6-solid-clone',
+  }]).flat()].map((item) => {
     return colorList.map((color) => {
       return {
         ...item,
@@ -23,12 +29,15 @@ export const cardInfomation = [
       }
     })
   }).flat(),
-  {
+  ...new Array(4).fill({
     type: 'add-4',
-    color: 'white',
-  },
-  {
+    icon: 'i-fa6-solid-dice-d20',
+    color: '#9a9a9a',
+  }),
+  ...new Array(4).fill({
     type: 'palette',
-    color: 'white',
-  },
+    icon: 'i-fa6-solid-palette',
+    color: '#9a9a9a',
+  }),
 ]
+

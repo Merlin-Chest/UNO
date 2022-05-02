@@ -8,25 +8,39 @@ const props = defineProps({
     type: String,
     default: 'white',
   },
+  icon: {
+    type: String,
+    default: '',
+  },
 })
 
 const content = computed(() => {
   if (props.type.startsWith('number-'))
     return props.type.replace('number-', '')
-  else if (props.type === 'default')
-    return 'default'
+  else return props.type
 })
+
+const bgColor = computed(() => `${props.color}30`)
+
 </script>
 
 <template>
-  <div w="30" h="40" flex-col :style="{alignItems:'center',justifyContent:'center',backgroundColor: color}" inline-block>
-    <div class="text">
-      {{ content }}
-    </div>
-    <div class="icon" w="10" h="10" bg="black" inline-block />
+  <div
+    w="30"
+    h="40"
+    :style="{
+      boxSizing: 'border-box',
+      border: '5px ' + color + ' solid',
+      backgroundColor: bgColor,
+      borderRadius: '10px',
+    }"
+    inline-block
+  >
+    <div
+      :class="icon" :style="{color}" inline-block h="100%" w="40px"
+    />
   </div>
 </template>
 
 <style scoped>
-
 </style>
