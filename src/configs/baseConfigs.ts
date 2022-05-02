@@ -6,21 +6,21 @@ export const cardInfomation = () => [
   ...[...[...genArr0To9, ...genArr1To9].map((i) => {
     return {
       type: `number-${i}`,
-      icon: `i-fa6-solid-${i}`,
+      icon: `${i}`,
     }
   }),
   ...new Array(2).fill([{
     type: 'exchange',
-    icon: 'i-fa6-solid-arrow-right-arrow-left',
+    icon: 'arrow-right-arrow-left',
   },
   {
     type: 'ban',
-    icon: 'i-fa6-solid-ban',
+    icon: 'ban',
   },
 
   {
     type: 'add-2',
-    icon: 'i-fa6-solid-clone',
+    icon: 'clone',
   }]).flat()].map((item) => {
     return colorList.map((color) => {
       return {
@@ -31,12 +31,12 @@ export const cardInfomation = () => [
   }).flat(),
   ...new Array(4).fill({
     type: 'add-4',
-    icon: 'i-fa6-solid-dice-d20',
+    icon: 'dice-d20',
     color: '#9a9a9a',
   }),
   ...new Array(4).fill({
     type: 'palette',
-    icon: 'i-fa6-solid-palette',
+    icon: 'palette',
     color: '#9a9a9a',
   }),
 ]

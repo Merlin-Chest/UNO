@@ -1,46 +1,44 @@
 <script setup lang="ts">
-const props = defineProps({
-  type: {
-    type: String,
-    default: 'default',
-  },
-  color: {
-    type: String,
-    default: 'white',
-  },
-  icon: {
-    type: String,
-    default: '',
-  },
+import type { CardProps } from '~/types/card';
+const props = withDefaults(defineProps<CardProps>(), {
+  type: 'number-0',
+  color: '',
+  icon: '',
 })
 
-const content = computed(() => {
-  if (props.type.startsWith('number-'))
-    return props.type.replace('number-', '')
-  else return props.type
-})
+// const content = computed(() => {
+//   if (props.type.startsWith('number-'))
+//     return props.type.replace('number-', '')
+//   else return props.type
+// })
 
 const bgColor = computed(() => `${props.color}30`)
-
+const iconClass = computed(() => `i fa6-solid:${props.icon}`)
 </script>
 
 <template>
-  <div
-    w="30"
-    h="40"
-    :style="{
-      boxSizing: 'border-box',
-      border: '5px ' + color + ' solid',
-      backgroundColor: bgColor,
-      borderRadius: '10px',
-    }"
-    inline-block
-  >
-    <div
-      :class="icon" :style="{color}" inline-block h="100%" w="40px"
-    />
+  <div class="container" w="30" h="40" inline-block>
+    <i :class="iconClass" flex align="items-center" justify="center" />
   </div>
 </template>
 
 <style scoped>
+.container {
+  box-sizing: border-box;
+  border: 5px v-bind(color) solid;
+  background-color: v-bind(bgColor);
+  border-radius: 10px;
+}
+
+.i::before {
+  width: 50px;
+}
+
+.i {
+  font-size: 80px;
+  line-height: 200px;
+  text-align: center;
+  color: v-bind(color);
+  height: 100%;
+}
 </style>
