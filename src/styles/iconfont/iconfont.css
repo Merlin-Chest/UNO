@@ -84,19 +84,27 @@ content: "\e00f";
 content: "\e010";
 }
 
-.i.pixelarticons\:dashbaord:before {
+.i.mdi\:cards:before {
 content: "\e011";
 }
 
-.i.pixelarticons\:downasaur:before {
+.i.mdi\:cards-outline:before {
 content: "\e012";
 }
 
-.i.pixelarticons\:sort:before {
+.i.pixelarticons\:dashbaord:before {
 content: "\e013";
 }
 
-.i.subway\:four-box:before {
+.i.pixelarticons\:downasaur:before {
 content: "\e014";
+}
+
+.i.pixelarticons\:sort:before {
+content: "\e015";
+}
+
+.i.subway\:four-box:before {
+content: "\e016";
 }
 

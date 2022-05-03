@@ -5,7 +5,6 @@ const props = withDefaults(defineProps<CardProps>(), {
   color: '',
   icon: '',
 })
-const isActive = ref(false);
 const emit = defineEmits(['selectCard', 'unSelectCard']);
 // const content = computed(() => {
 //   if (props.type.startsWith('number-'))
@@ -13,10 +12,12 @@ const emit = defineEmits(['selectCard', 'unSelectCard']);
 //   else return props.type
 // })
 
+// 样式相关
 const bgColor = computed(() => `${props.color}`)
 const iconClass = computed(() => `i ${props.icon}`)
 const containerClass = computed(() => isActive.value ? 'container translate-y--8' : 'container')
 
+const isActive = ref(false);
 const handleClick = () => {
   emit(isActive ? 'selectCard' : 'unSelectCard')
   isActive.value = !isActive.value

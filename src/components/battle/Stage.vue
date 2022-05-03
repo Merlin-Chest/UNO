@@ -1,7 +1,7 @@
 <template>
-    <div flex flex-col items-center justify="between" overflow="hidden" border="dashed 4 rounded-4 cool-gray-300" w-240
+    <div flex flex-col items-center justify="between" overflow="hidden" b="dashed 4 rounded-4 cool-gray-300" w-240
         h-150 m="auto">
-        <div w="1000px" h="200px"></div>
+        <enemy-area></enemy-area>
         <CardArea w="90%"></CardArea>
     </div>
 </template>
