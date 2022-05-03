@@ -1,13 +1,10 @@
 <template>
   <div>
-  <router-link to="/game/start">start</router-link>
+    <Stage />
   </div>
 </template>
-
 <script setup lang="ts">
 
 </script>
 
-<style scoped>
 
-</style>

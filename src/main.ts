@@ -9,15 +9,13 @@ import './styles/main.css'
 import 'uno.css'
 import '~/styles/iconfont/iconfont.css'
 
-export const app = createApp(App)
+import './socket'
 
-// websocket相关
-import { useSocketStoreWithOut } from '~/store/socket';
-import VueNativeSock from "vue-native-websocket-vue3";
-const socketStore = useSocketStoreWithOut();
-app.use(VueNativeSock, "", {
-  store: socketStore
-});
+const app = createApp(App)
+
+// 状态管理
+import { store } from './store'
+app.use(store)
 
 // 路由管理
 const router = createRouter({

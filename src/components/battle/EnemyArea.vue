@@ -14,7 +14,7 @@ const players = ref([{
     type: 'number-1',
     color: 'red',
     icon: 'pixelarticons:downasaur'
-  }
+  } as CardProps
 },{
   name: 'merlin',
   id: '111',
@@ -23,7 +23,7 @@ const players = ref([{
     type: 'number-1',
     color: 'green',
     icon: 'pixelarticons:downasaur'
-  }
+  } as CardProps
 }])
 </script>
 

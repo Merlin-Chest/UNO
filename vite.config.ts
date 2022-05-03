@@ -7,7 +7,6 @@ import Pages from 'vite-plugin-pages'
 import Components from 'unplugin-vue-components/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Unocss from 'unocss/vite'
-import UnocssIcons from '@unocss/preset-icons'
 import VueTypeImports from 'vite-plugin-vue-type-imports'
 
 export default defineConfig({
@@ -16,13 +15,23 @@ export default defineConfig({
       '~/': `${path.resolve(__dirname, 'src')}/`,
     },
   },
+  server:{
+    proxy:{
+      '/socket.io':'http://localhost:3000'
+    }
+  },
   plugins: [
     Vue({
       reactivityTransform: true,
     }),
     VueTypeImports(),
     // https://github.com/hannoeru/vite-plugin-pages
-    Pages(),
+    Pages({
+      dirs: [
+        { dir: 'src/pages', baseRoute: '' },
+        { dir: 'src/pages/game', baseRoute: 'game' },
+      ],
+    }),
 
     // https://github.com/antfu/unplugin-auto-import
     AutoImport({
@@ -42,14 +51,7 @@ export default defineConfig({
 
     // https://github.com/antfu/unocss
     // see unocss.config.ts for config
-    Unocss({
-      presets: [
-        UnocssIcons({
-          // options
-          prefix: 'i-',
-        }),
-      ]
-    }),
+    Unocss({}),
   ],
 
   // https://github.com/vitest-dev/vitest

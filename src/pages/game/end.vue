@@ -1,6 +1,6 @@
 <template>
   <div>
-  <router-link to="/game/start">start</router-link>
+
   </div>
 </template>
 

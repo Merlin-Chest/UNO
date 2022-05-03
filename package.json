@@ -17,8 +17,8 @@
     "eslint-plugin-vue": "^8.7.1",
     "generate-avatar": "^1.4.10",
     "pinia": "^2.0.13",
+    "socket.io-client": "^4.5.0",
     "vue": "^3.2.33",
-    "vue-native-websocket-vue3": "^3.1.5",
     "vue-router": "^4.0.14"
   },
   "devDependencies": {
