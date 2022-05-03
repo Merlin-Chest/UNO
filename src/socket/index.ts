@@ -6,10 +6,11 @@ interface ServerToClientEvents {
 
 interface ClientToServerEvents {
   CREATE_ROOM: (data:dataType<{ id: string, name: string }>) => void;
+  CREATE_USER: (data:dataType<UserInfo>) => void;
 }
 
 interface dataType<T> {
-  type: string,
+  type: string
   data: T
 }
 
