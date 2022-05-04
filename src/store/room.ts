@@ -1,25 +1,24 @@
 import { defineStore } from 'pinia'
-import { useCards } from '~/hooks/card'
 
-export const useGameStore = defineStore('game', {
+export const useRoomStore = defineStore('game', {
   state: () => {
     return {
-      _gameCards: [] as CardProps[],
+      _roomInfo:{} as RoomInfo,
       _userCards: [] as CardProps[],
     }
   },
   getters: {
-    userCards: (state) => state._userCards
+    userCards: (state) => state._userCards,
+    gameCard: (state)=>state._roomInfo.gameCard,
   },
   actions: {
-    getGameCards() {
-      this._gameCards = useCards()
+    setRoomInfo(roomInfo:RoomInfo){
+      this._roomInfo = roomInfo
     },
-
     getNewCards(count: number = 1) {
       for (let i = 0; i < count; i++) {
-        if (!this._gameCards || this._gameCards.length === 0) return;
-        let card = this._gameCards.shift();
+        if (!this.gameCard || this.gameCard.length === 0) return;
+        let card = this.gameCard.shift();
         this.addCard(card)
       }
     },
@@ -42,7 +41,6 @@ export const useGameStore = defineStore('game', {
       }, [] as CardProps[])
     },
     resetGameData() {
-      this._gameCards = [];
       this._userCards = [];
     }
   },

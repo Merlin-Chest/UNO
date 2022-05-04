@@ -1,20 +1,6 @@
 import { io, Socket } from "socket.io-client";
 // import config from "~/configs/socket";
 
-interface ServerToClientEvents {
-}
-
-interface ClientToServerEvents {
-  CREATE_ROOM: (data:dataType<{ id: string, name: string }>) => void;
-  CREATE_USER: (data:dataType<UserInfo>) => void;
-}
-
-interface dataType<T> {
-  type: string
-  data: T
-}
-
-// please note that the types are reversed
 const socket: Socket<ServerToClientEvents, ClientToServerEvents> = io();
 
 socket.on('connect', () => {
