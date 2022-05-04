@@ -1,5 +1,5 @@
 <template>
-    <div flex flex-col items-center justify="between" overflow="hidden" b="dashed 4 rounded-4 cool-gray-300" w-240 h-150
+    <div flex flex-col items-center justify="between" overflow="hidden"
         m="auto">
         <enemy-area></enemy-area>
         <button @click="handleClick">send</button>
@@ -8,12 +8,11 @@
 </template>
 
 <script setup lang="ts">
-import { useGameStore } from '~/store/game';
+import { useRoomStore } from '~/store/room';
 
-const gameStore = useGameStore();
+const roomStore = useRoomStore();
 onBeforeMount(() => {
-    gameStore.resetGameData()
-    gameStore.getGameCards();
+    roomStore.resetGameData()
 })
 
 const handleClick = ()=>{

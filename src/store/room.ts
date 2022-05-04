@@ -8,12 +8,19 @@ export const useRoomStore = defineStore('game', {
     }
   },
   getters: {
+    roomId:(state)=>state._roomInfo.roomId,
+    roomName:(state)=>state._roomInfo.roomName,
+    players:(state)=>state._roomInfo.players,
     userCards: (state) => state._userCards,
+    roomCode:(state)=>state._roomInfo.roomCode,
     gameCard: (state)=>state._roomInfo.gameCard,
   },
   actions: {
     setRoomInfo(roomInfo:RoomInfo){
       this._roomInfo = roomInfo
+    },
+    updatePlayers(players:PlayerInfo[]){
+      this._roomInfo.players = players
     },
     getNewCards(count: number = 1) {
       for (let i = 0; i < count; i++) {

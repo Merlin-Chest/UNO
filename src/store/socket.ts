@@ -10,7 +10,7 @@ const useSocketStore = defineStore('socket', {
   actions: {
     Promisify<T>(eventName: ServerToClientEventsKeys) {
       return new Promise<T>((resolve, reject) => {
-        this.socket.on(eventName, (res) => {
+        this.socket.on(eventName, (res:any) => {
           let { message, data } = res;
           if (message) {
             // 显示消息弹窗
@@ -21,7 +21,7 @@ const useSocketStore = defineStore('socket', {
     },
     createUser(name: string) {
       this.socket.emit('CREATE_USER', {
-        type: 'RES_CREATE_USER',
+        type: 'CREATE_USER',
         data: {
           id: Date.now().toString(),
           name,
@@ -31,7 +31,7 @@ const useSocketStore = defineStore('socket', {
     },
     createRoom(name: string, owner: UserInfo) {
       this.socket.emit('CREATE_ROOM', {
-        type: 'RES_CREATE_ROOM',
+        type: 'CREATE_ROOM',
         data: {
           roomId: Date.now().toString(),
           roomName: name,
@@ -39,7 +39,17 @@ const useSocketStore = defineStore('socket', {
         }
       })
       return this.Promisify<RoomInfo>('RES_CREATE_ROOM')
-    }
+    },
+    joinRoom(code: string, playerInfo: PlayerInfo) {
+      this.socket.emit('JOIN_ROOM', {
+        type: 'JOIN_ROOM',
+        data: {
+          roomCode: code,
+          playerInfo
+        }
+      })
+      return this.Promisify<RoomInfo>('RES_JOIN_ROOM')
+    },
   }
 })
 

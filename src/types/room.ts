@@ -1,14 +1,18 @@
 declare interface RoomData {
   roomId: string;
   roomName: string;
-  owner: UserInfo;
+  owner: PlayerInfo;
 }
 
+declare type PlayerInfo = UserInfo
+
 declare type RoomInfo = RoomData & {
+  roomCode:string;
   gameCard: CardProps[];
   userCards: {
     [key: string]: CardProps[]
   };
+  players:PlayerInfo[];
   order: string[];
   winnerOrder: string[];
   createTime: number;

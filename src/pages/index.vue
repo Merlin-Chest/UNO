@@ -1,13 +1,21 @@
 <template>
-  <div flex flex-col items-center justify="between" h-60>
+  <div flex flex-col items-center justify="between" h-50>
     <div>起个名字吧！</div>
     <div>
-      你的名字：<input w-30 v-model="userName" b="2 rounded-2 cool-gray-300" />
+      昵称：<input w-30 v-model="userName" b="2 rounded-2 cool-gray-300" />
+    </div>
+    <div flex w-45 justify="between">
+      <label>
+        <input type="radio" name="room" value="joinRoom" checked @change="roomType = 'joinRoom'">
+        加入房间
+      </label>
+      <label>
+        <input type="radio" name="room" value="createRoom" @change="roomType = 'createRoom'">创建房间
+      </label>
     </div>
     <div>
-      进入房间名：<input w-30 v-model="roomName" b="2 rounded-2 cool-gray-300" />
+      {{ roomTip }}：<input w-30 v-model="roomAns" b="2 rounded-2 cool-gray-300" />
     </div>
-    （不存在房间将重新创建）
     <button w-14 h-7 b="rounded-3" c="white" bg="cool-gray-500" @click="handleClick">Go!</button>
   </div>
 </template>
@@ -17,7 +25,10 @@ import { useRoomStore } from '~/store/room';
 import useSocketStore from '~/store/socket';
 import useUserStore from '~/store/user';
 const userName = $ref('');
-const roomName = $ref('');
+const roomAns = $ref('');
+
+const roomType = ref<'joinRoom' | 'createRoom'>('joinRoom')
+const roomTip = computed(() => roomType.value === 'joinRoom' ? '房间代码' : '房间名称')
 
 const router = useRouter()
 const socketStore = useSocketStore()
@@ -25,9 +36,17 @@ const userStore = useUserStore()
 const roomStore = useRoomStore()
 
 const handleClick = () => {
+  if (!userName) {
+    alert('请输入昵称')
+    return
+  }
+  if (!roomAns) {
+    alert('请输入' + roomTip.value)
+    return
+  }
   socketStore.createUser(userName).then((user) => {
     userStore.setUserInfo(user)
-    return socketStore.createRoom(roomName, userStore.getUserInfo())
+    return socketStore[roomType.value](roomAns, userStore.getUserInfo())
   }).then((roomInfo) => {
     roomStore.setRoomInfo(roomInfo)
     router.push('/game/wait')
