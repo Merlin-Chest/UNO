@@ -11,6 +11,7 @@ export const useRoomStore = defineStore('game', {
     roomId:(state)=>state._roomInfo.roomId,
     roomName:(state)=>state._roomInfo.roomName,
     players:(state)=>state._roomInfo.players,
+    owner:(state)=>state._roomInfo.owner,
     userCards: (state) => state._userCards,
     roomCode:(state)=>state._roomInfo.roomCode,
     gameCard: (state)=>state._roomInfo.gameCard,

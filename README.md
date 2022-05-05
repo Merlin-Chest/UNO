@@ -37,5 +37,5 @@
 
 ### 项目模板
 
-[Create a repo from this template on GitHub](https://github.com/antfu/vitesse-lite/generate).
+[Antfu/vitesse-lite](https://github.com/antfu/vitesse-lite/generate).
 
