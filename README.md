@@ -6,7 +6,7 @@
 
 前端：Vue3 + Typescript + WebSocket + Socket.io
 
-后端：Express + Typescript + Socket.io ([后端源码地址](https://github.com/Merlin218/UNO-server))
+后端：Express + Typescript + Socket.io [源码地址](https://github.com/Merlin218/UNO-server)
 
 ## 开发进度
 
