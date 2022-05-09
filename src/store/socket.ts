@@ -1,4 +1,6 @@
 import { defineStore } from "pinia";
+import type { RoomInfo, PlayerInfo } from "types/room";
+import type { ServerKeys } from "types/server";
 import socket from "~/socket";
 
 const useSocketStore = defineStore('socket', {
@@ -8,7 +10,7 @@ const useSocketStore = defineStore('socket', {
     }
   },
   actions: {
-    Promisify<T>(eventName: ServerToClientEventsKeys) {
+    Promisify<T>(eventName: ServerKeys) {
       return new Promise<T>((resolve, reject) => {
         this.socket.on(eventName, (res:any) => {
           let { message, data } = res;

@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import type { RoomInfo, PlayerInfo } from 'types/room'
 
 export const useRoomStore = defineStore('game', {
   state: () => {

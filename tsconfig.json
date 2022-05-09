@@ -16,7 +16,6 @@
     "types": [
       "vite/client",
       "vite-plugin-pages/client",
-      "ws"
     ],
     "paths": {
       "~/*": ["src/*"]

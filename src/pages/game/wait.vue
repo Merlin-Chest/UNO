@@ -13,12 +13,12 @@
   </div>
   <div>
     <button v-if="isOwner" text="3.5" c-red b="red rounded-10 3 dashed hover:transparent" transition="duration-400"
-      hover="bg-red-400 text-white" px-3 py-1 @click="">
+      hover="bg-red-400 text-white" px-3 py-1 @click="startGame">
       开始游戏
     </button>
     <div v-else m-b-3>等待玩家进入...</div>
     <button m-l-3 c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
-      hover="bg-gray text-white" px-3 py-1 @click="">
+      hover="bg-gray text-white" px-3 py-1 @click="dissolveRoom">
       {{ isOwner ? '解散房间' : '退出房间' }}
     </button>
   </div>
@@ -40,20 +40,30 @@ const roomId = computed(() => roomStore.roomId)
 const roomName = computed(() => roomStore.roomName)
 const roomCode = computed(() => roomStore.roomCode)
 const players = computed(() => roomStore.players)
+const isOwner = computed(() => roomStore.owner.id === userStore.id && roomStore.owner.name === userStore.name)
 
 const { copy } = useClipboard({ source: roomCode })
 
 
-const isOwner = computed(() => roomStore.owner.id === userStore.id && roomStore.owner.name === userStore.name)
-
 const socketStore = useSocketStore();
-socketStore.socket.on('UPDATE_PLAYER_LIST', (res) => {
+socketStore.socket.on('UPDATE_PLAYER_LIST', (res: any) => {
   const { data, message } = res;
   if (message) {
     // TODO
   }
   roomStore.updatePlayers(data)
 })
+
+const startGame = () => {
+  socketStore.socket.emit('START_GAME', {
+    type: 'START_GAME',
+    data: roomCode
+  })
+}
+
+const dissolveRoom = () => {
+
+}
 </script>
 
 <style scoped>

@@ -1,3 +1,6 @@
+import type { CardProps } from "./card";
+import { UserInfo } from "./user";
+
 declare interface RoomData {
   roomId: string;
   roomName: string;
