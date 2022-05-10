@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { RoomInfo, PlayerInfo } from "types/room";
+import type { RoomInfo } from "types/room";
 import type { ServerKeys } from "types/server";
 import socket from "~/socket";
 
@@ -42,12 +42,12 @@ const useSocketStore = defineStore('socket', {
       })
       return this.Promisify<RoomInfo>('RES_CREATE_ROOM')
     },
-    joinRoom(code: string, playerInfo: PlayerInfo) {
+    joinRoom(code: string, userInfo: UserInfo) {
       this.socket.emit('JOIN_ROOM', {
         type: 'JOIN_ROOM',
         data: {
           roomCode: code,
-          playerInfo
+          userInfo
         }
       })
       return this.Promisify<RoomInfo>('RES_JOIN_ROOM')
