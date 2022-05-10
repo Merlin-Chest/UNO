@@ -5,26 +5,31 @@
 </template>
 
 <script setup lang="ts">
+import { useRoomStore } from '~/store/room';
 
-const players = ref([{
-  name: 'merlinmerlinmerlinmerlin',
-  id: '111',
-  cardNum: 0,
-  lastCard:{
-    type: 'number-1',
-    color: 'red',
-    icon: 'pixelarticons:downasaur'
-  } as CardProps
-},{
-  name: 'merlin',
-  id: '111',
-  cardNum: 0,
-  lastCard:{
-    type: 'number-1',
-    color: 'green',
-    icon: 'pixelarticons:downasaur'
-  } as CardProps
-}])
+
+const roomStore = useRoomStore()
+const players = computed(()=>roomStore.players)
+
+// const players = ref([{
+//   name: 'merlinmerlinmerlinmerlin',
+//   id: '111',
+//   cardNum: 0,
+//   lastCard:{
+//     type: 'number-1',
+//     color: 'red',
+//     icon: 'pixelarticons:downasaur'
+//   } as CardProps
+// },{
+//   name: 'merlin',
+//   id: '111',
+//   cardNum: 0,
+//   lastCard:{
+//     type: 'number-1',
+//     color: 'green',
+//     icon: 'pixelarticons:downasaur'
+//   } as CardProps
+// }])
 </script>
 
 <style scoped>

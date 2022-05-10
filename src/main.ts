@@ -1,6 +1,8 @@
 import { createApp } from 'vue'
-import { createRouter, createWebHistory } from 'vue-router'
 import routes from 'virtual:generated-pages'
+import { createRouter, createWebHistory } from 'vue-router'
+
+// import router from './router'
 import App from './App.vue'
 
 // css 样式
@@ -24,4 +26,8 @@ const router = createRouter({
 })
 app.use(router)
 app.mount('#app')
+
+app.config.errorHandler = (err)=>{
+  console.log(err)
+}
 

@@ -18,7 +18,7 @@
     </button>
     <div v-else m-b-3>等待玩家进入...</div>
     <button m-l-3 c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
-      hover="bg-gray text-white" px-3 py-1 @click="dissolveRoom">
+      hover="bg-gray text-white" px-3 py-1 @click="dissolveOrLeaveRoom">
       {{ isOwner ? '解散房间' : '退出房间' }}
     </button>
   </div>
@@ -40,29 +40,60 @@ const roomId = computed(() => roomStore.roomId)
 const roomName = computed(() => roomStore.roomName)
 const roomCode = computed(() => roomStore.roomCode)
 const players = computed(() => roomStore.players)
-const isOwner = computed(() => roomStore.owner.id === userStore.id && roomStore.owner.name === userStore.name)
+const isOwner = computed(() => roomStore?.owner?.id === userStore?.id && roomStore?.owner?.name === userStore?.name)
 
 const { copy } = useClipboard({ source: roomCode })
 
+const router = useRouter()
 
 const socketStore = useSocketStore();
+
+// 监听玩家列表变化
 socketStore.socket.on('UPDATE_PLAYER_LIST', (res: any) => {
-  const { data, message } = res;
+  const { data: players, message } = res;
   if (message) {
     // TODO
   }
-  roomStore.updatePlayers(data)
+  roomStore.updatePlayers(players)
 })
 
+// 监听游戏是否开始
+socketStore.socket.on('GAME_IS_START', (res: any) => {
+  const { data: { userCards }, message } = res;
+  if (message) {
+    // TODO
+  }
+  roomStore.addUserCards(userCards);
+  router.push('/process')
+})
+
+
+// 监听房间是否解散
+socketStore.socket.on('RES_DISSOLVE_ROOM', (res: any) => {
+  const { message } = res;
+  if (message) {
+    // TODO
+  }
+  router.push('/')
+  roomStore.cleanRoom();
+})
+
+// 开始游戏
 const startGame = () => {
-  socketStore.socket.emit('START_GAME', {
-    type: 'START_GAME',
-    data: roomCode
+  socketStore.startGame(roomCode.value).then(() => {
+    router.push('/process')
   })
 }
 
-const dissolveRoom = () => {
-
+// 解散房间
+const dissolveOrLeaveRoom = () => {
+  if (isOwner.value) {
+    socketStore.dissolveGame(roomCode.value)
+  } else {
+    socketStore.leaveGame(roomCode.value, userStore.getUserInfo()).then(() => {
+      router.push('/')
+    })
+  }
 }
 </script>
 

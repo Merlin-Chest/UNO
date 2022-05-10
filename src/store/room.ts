@@ -4,36 +4,33 @@ import type { RoomInfo, PlayerInfo } from 'types/room'
 export const useRoomStore = defineStore('game', {
   state: () => {
     return {
-      _roomInfo:{} as RoomInfo,
+      _roomInfo: {} as RoomInfo,
       _userCards: [] as CardProps[],
     }
   },
   getters: {
-    roomId:(state)=>state._roomInfo.roomId,
-    roomName:(state)=>state._roomInfo.roomName,
-    players:(state)=>state._roomInfo.players,
-    owner:(state)=>state._roomInfo.owner,
+    roomId: (state) => state._roomInfo.roomId,
+    roomName: (state) => state._roomInfo.roomName,
+    players: (state) => state._roomInfo.players,
+    owner: (state) => state._roomInfo.owner,
     userCards: (state) => state._userCards,
-    roomCode:(state)=>state._roomInfo.roomCode,
-    gameCard: (state)=>state._roomInfo.gameCard,
+    roomCode: (state) => state._roomInfo.roomCode,
+    gameCards: (state) => state._roomInfo.gameCards,
   },
   actions: {
-    setRoomInfo(roomInfo:RoomInfo){
+    setRoomInfo(roomInfo: RoomInfo) {
       this._roomInfo = roomInfo
     },
-    updatePlayers(players:PlayerInfo[]){
+    updatePlayers(players: PlayerInfo[]) {
       this._roomInfo.players = players
     },
-    getNewCards(count: number = 1) {
-      for (let i = 0; i < count; i++) {
-        if (!this.gameCard || this.gameCard.length === 0) return;
-        let card = this.gameCard.shift();
-        this.addCard(card)
+    addUserCards(cards: CardProps[] | undefined) {
+      if (!cards) return;
+      if (!Array.isArray(this._userCards))
+        this._userCards = []
+      for (const card of cards) {
+        this._userCards.push(card)
       }
-    },
-    addCard(card: CardProps | undefined) {
-      if (!card) return;
-      this._userCards.push(card)
     },
     removeCard(idx: number) {
       if (idx < 0 || idx >= this._userCards.length) return -1;
@@ -49,8 +46,9 @@ export const useRoomStore = defineStore('game', {
         return prev;
       }, [] as CardProps[])
     },
-    resetGameData() {
+    cleanRoom() {
       this._userCards = [];
+      this._roomInfo = {} as RoomInfo;
     }
   },
 })

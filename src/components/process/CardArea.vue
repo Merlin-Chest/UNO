@@ -8,11 +8,9 @@
 </template>
 
 <script setup lang="ts">
-import { useGameStore } from '~/store/game';
-const store = useGameStore();
-
-store.getNewCards(6);
-const cards = computed(() => store.userCards)
+import {useRoomStore} from '~/store/room';
+const roomStore = useRoomStore();
+const cards = computed(() => roomStore.userCards)
 
 const selectList = ref<number[]>([]);
 

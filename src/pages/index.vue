@@ -49,7 +49,7 @@ const handleClick = () => {
     return socketStore[roomType.value](roomAns, userStore.getUserInfo())
   }).then((roomInfo) => {
     roomStore.setRoomInfo(roomInfo)
-    router.push('/game/wait')
+    router.push('/wait')
   });
 }
 </script>

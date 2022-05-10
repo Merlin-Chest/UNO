@@ -8,12 +8,6 @@
 </template>
 
 <script setup lang="ts">
-import { useRoomStore } from '~/store/room';
-
-const roomStore = useRoomStore();
-onBeforeMount(() => {
-    roomStore.resetGameData()
-})
 
 const handleClick = ()=>{
     

@@ -11,7 +11,7 @@ declare type PlayerInfo = UserInfo
 
 declare type RoomInfo = RoomData & {
   roomCode:string;
-  gameCard: CardProps[];
+  gameCards: CardProps[];
   userCards: {
     [key: string]: CardProps[]
   };
