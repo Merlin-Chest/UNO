@@ -1,4 +1,4 @@
-import { genArr0To9, genArr1To9 } from '~/utils'
+import { genArr0To9, genArr1To9 } from '~/styles/utils'
 
 const colorList = ['#FF6666', '#99CC66', '#99CCFF', '#FFCC33']
 

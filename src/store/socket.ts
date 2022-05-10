@@ -1,6 +1,5 @@
 import { defineStore } from "pinia";
-import type { RoomInfo } from "types/room";
-import type { ServerKeys } from "types/server";
+import type { ServerDataType, ServerKeys } from "~/types/server";
 import socket from "~/socket";
 
 const useSocketStore = defineStore('socket', {
@@ -12,12 +11,8 @@ const useSocketStore = defineStore('socket', {
   actions: {
     Promisify<T>(eventName: ServerKeys) {
       return new Promise<T>((resolve, reject) => {
-        this.socket.on(eventName, (res: any) => {
-          let { message, data } = res;
-          if (message) {
-            // 显示消息弹窗
-          }
-          resolve(data)
+        this.socket.once(eventName, (res: any) => {
+          resolve(res)
         })
       })
     },
@@ -29,7 +24,7 @@ const useSocketStore = defineStore('socket', {
           name,
         }
       })
-      return this.Promisify<UserInfo>('RES_CREATE_USER')
+      return this.Promisify<ServerDataType<'RES_CREATE_USER',UserInfo>>('RES_CREATE_USER')
     },
     createRoom(name: string, owner: UserInfo) {
       this.socket.emit('CREATE_ROOM', {
@@ -40,7 +35,7 @@ const useSocketStore = defineStore('socket', {
           owner
         }
       })
-      return this.Promisify<RoomInfo>('RES_CREATE_ROOM')
+      return this.Promisify<ServerDataType<'RES_CREATE_ROOM',RoomInfo>>('RES_CREATE_ROOM')
     },
     joinRoom(code: string, userInfo: UserInfo) {
       this.socket.emit('JOIN_ROOM', {
@@ -50,14 +45,13 @@ const useSocketStore = defineStore('socket', {
           userInfo
         }
       })
-      return this.Promisify<RoomInfo>('RES_JOIN_ROOM')
+      return this.Promisify<ServerDataType<'RES_CREATE_ROOM',RoomInfo>>('RES_JOIN_ROOM')
     },
     startGame(code: string) {
       this.socket.emit('START_GAME', {
         type: 'START_GAME',
         data: code
       })
-      return this.Promisify<RoomInfo>('RES_START_GAME')
     },
     dissolveGame(code: string) {
       this.socket.emit('DISSOLVE_ROOM', {
@@ -73,7 +67,7 @@ const useSocketStore = defineStore('socket', {
           userInfo,
         }
       })
-      return this.Promisify<null>('RES_LEAVE_ROOM')
+      return this.Promisify<ServerDataType<'RES_LEAVE_ROOM',null>>('RES_LEAVE_ROOM')
     },
   }
 })

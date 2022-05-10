@@ -13,7 +13,6 @@ declare module '@vue/runtime-core' {
     PlayerInfo: typeof import('./src/components/wait/PlayerInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    Stage: typeof import('./src/components/process/Stage.vue')['default']
   }
 }
 

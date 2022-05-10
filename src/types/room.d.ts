@@ -1,13 +1,14 @@
-import type { CardProps } from "./card";
-import { UserInfo } from "./user";
-
 declare interface RoomData {
   roomId: string;
   roomName: string;
   owner: PlayerInfo;
 }
 
-declare type PlayerInfo = UserInfo
+declare interface PlayerInfo extends UserInfo {
+  socketId:string,
+  lastCard:CardProps | null,
+  cardNum:number
+}
 
 declare type RoomInfo = RoomData & {
   roomCode:string;
@@ -16,7 +17,7 @@ declare type RoomInfo = RoomData & {
     [key: string]: CardProps[]
   };
   players:PlayerInfo[];
-  order: string[];
+  order: number;
   winnerOrder: string[];
   createTime: number;
   startTime: number;

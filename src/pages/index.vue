@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import notify from '~/plugins/notification/notify';
 import { useRoomStore } from '~/store/room';
 import useSocketStore from '~/store/socket';
 import useUserStore from '~/store/user';
@@ -37,19 +38,32 @@ const roomStore = useRoomStore()
 
 const handleClick = () => {
   if (!userName) {
-    alert('请输入昵称')
+    notify({
+      content:'请输入昵称',
+    })
     return
   }
   if (!roomAns) {
-    alert('请输入' + roomTip.value)
+    notify({
+      content:'请输入' + roomTip.value,
+    })
     return
   }
-  socketStore.createUser(userName).then((user) => {
+  socketStore.createUser(userName).then((res) => {
+    const {data:user}= res
     userStore.setUserInfo(user)
     return socketStore[roomType.value](roomAns, userStore.getUserInfo())
-  }).then((roomInfo) => {
-    roomStore.setRoomInfo(roomInfo)
-    router.push('/wait')
+  }).then((res) => {
+    const {data:roomInfo,message} = res
+    if(message){
+      notify({
+        content:message
+      })
+    }
+    if(roomInfo){
+      roomStore.setRoomInfo(roomInfo)
+      router.push('/wait')
+    }
   });
 }
 

@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import type { RoomInfo, PlayerInfo } from 'types/room'
 
 export const useRoomStore = defineStore('game', {
   state: () => {
@@ -16,6 +15,7 @@ export const useRoomStore = defineStore('game', {
     userCards: (state) => state._userCards,
     roomCode: (state) => state._roomInfo.roomCode,
     gameCards: (state) => state._roomInfo.gameCards,
+    order:(state)=>state._roomInfo.order
   },
   actions: {
     setRoomInfo(roomInfo: RoomInfo) {

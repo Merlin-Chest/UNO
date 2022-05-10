@@ -32,9 +32,8 @@ declare interface ServerToClientEvents{
   RES_LEAVE_ROOM:ServerEventListenersCb<'RES_LEAVE_ROOM',null>
   RES_DISSOLVE_ROOM:ServerEventListenersCb<'RES_DISSOLVE_ROOM',null>
   UPDATE_PLAYER_LIST:ServerEventListenersCb<'UPDATE_PLAYER_LIST',PlayerInfo[]>
-  GAME_IS_START:ServerEventListenersCb<'GAME_IS_START',{
-    userCards:CardProps[]
-  }>
+  UPDATE_ROOM_INFO:ServerEventListenersCb<'UPDATE_ROOM_INFO',RoomInfo>
+  GAME_IS_START:ServerEventListenersCb<'GAME_IS_START',{roomInfo:RoomInfo,userCards:CardProps[]}>
   RES_START_GAME:ServerEventListenersCb<'RES_START_GAME',{
     userCards:CardProps[]
   }>

@@ -50,47 +50,54 @@ const router = useRouter()
 
 const socketStore = useSocketStore();
 
-// 监听玩家列表变化
-socketStore.socket.on('UPDATE_PLAYER_LIST', (res: any) => {
-  const { data: players, message } = res;
-  if (message) {
-    notify({
-      content:message
-    })
-  }
-  roomStore.updatePlayers(players)
+onBeforeMount(()=>{
+  // 监听玩家列表变化
+  socketStore.socket.on('UPDATE_PLAYER_LIST', (res) => {
+    const { data: players, message } = res;
+    if (message) {
+      notify({
+        content:message
+      })
+    }
+    roomStore.updatePlayers(players)
+  })
+
+  // 监听游戏是否开始
+  socketStore.socket.on('GAME_IS_START', (res) => {
+    const { data:{roomInfo,userCards}, message } = res;
+    if (message && !isOwner.value) {
+      notify({
+        content:message
+      })
+    }
+    roomStore.setRoomInfo(roomInfo)
+    roomStore.addUserCards(userCards);
+    router.push('/process')
+  })
+
+
+  // 监听房间是否解散
+  socketStore.socket.on('RES_DISSOLVE_ROOM', (res) => {
+    const { message } = res;
+    if (message) {
+      notify({
+        content:message
+      })
+    }
+    router.push('/')
+    roomStore.cleanRoom();
+  })
 })
 
-// 监听游戏是否开始
-socketStore.socket.on('GAME_IS_START', (res: any) => {
-  const { data: { userCards }, message } = res;
-  if (message) {
-    notify({
-      content:message
-    })
-  }
-  roomStore.addUserCards(userCards);
-  router.push('/process')
-})
-
-
-// 监听房间是否解散
-socketStore.socket.on('RES_DISSOLVE_ROOM', (res: any) => {
-  const { message } = res;
-  if (message) {
-    notify({
-      content:message
-    })
-  }
-  router.push('/')
-  roomStore.cleanRoom();
+onBeforeUnmount(()=>{
+  socketStore.socket.off('UPDATE_PLAYER_LIST');
+  socketStore.socket.off('GAME_IS_START');
+  socketStore.socket.off('RES_DISSOLVE_ROOM');
 })
 
 // 开始游戏
 const startGame = () => {
-  socketStore.startGame(roomCode.value).then(() => {
-    router.push('/process')
-  })
+  socketStore.startGame(roomCode.value)
 }
 
 // 解散房间
@@ -98,7 +105,13 @@ const dissolveOrLeaveRoom = () => {
   if (isOwner.value) {
     socketStore.dissolveGame(roomCode.value)
   } else {
-    socketStore.leaveGame(roomCode.value, userStore.getUserInfo()).then(() => {
+    socketStore.leaveGame(roomCode.value, userStore.getUserInfo()).then((res) => {
+      const { message } = res;
+      if(message){
+        notify({
+          content:message
+        })
+      }
       router.push('/')
     })
   }
