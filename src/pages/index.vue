@@ -52,6 +52,7 @@ const handleClick = () => {
     router.push('/wait')
   });
 }
+
 </script>
 
 <style scoped>

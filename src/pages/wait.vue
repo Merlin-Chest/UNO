@@ -1,4 +1,5 @@
 <template>
+<div w="100%" h="100%"> 
   <div flex items-center justify="between">
     <div w-40 text-start>ID：{{ roomId }}</div>
     <div flex-1>房间号:
@@ -22,7 +23,7 @@
       {{ isOwner ? '解散房间' : '退出房间' }}
     </button>
   </div>
-
+</div>
 </template>
 
 <script setup lang="ts">
@@ -31,6 +32,7 @@ import useSocketStore from '~/store/socket';
 import PlayerInfo from '~/components/wait/PlayerInfo.vue';
 import useUserStore from '~/store/user';
 import { useClipboard } from '@vueuse/core'
+import notify from '~/plugins/notification/notify';
 
 
 const roomStore = useRoomStore()
@@ -52,7 +54,9 @@ const socketStore = useSocketStore();
 socketStore.socket.on('UPDATE_PLAYER_LIST', (res: any) => {
   const { data: players, message } = res;
   if (message) {
-    // TODO
+    notify({
+      content:message
+    })
   }
   roomStore.updatePlayers(players)
 })
@@ -61,7 +65,9 @@ socketStore.socket.on('UPDATE_PLAYER_LIST', (res: any) => {
 socketStore.socket.on('GAME_IS_START', (res: any) => {
   const { data: { userCards }, message } = res;
   if (message) {
-    // TODO
+    notify({
+      content:message
+    })
   }
   roomStore.addUserCards(userCards);
   router.push('/process')
@@ -72,7 +78,9 @@ socketStore.socket.on('GAME_IS_START', (res: any) => {
 socketStore.socket.on('RES_DISSOLVE_ROOM', (res: any) => {
   const { message } = res;
   if (message) {
-    // TODO
+    notify({
+      content:message
+    })
   }
   router.push('/')
   roomStore.cleanRoom();
