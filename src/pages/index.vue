@@ -1,6 +1,6 @@
 <template>
   <div flex flex-col items-center justify="between" h-50>
-    <div>起个名字吧！</div>
+    <div>来一局UNO吧！</div>
     <div>
       昵称：<input w-30 v-model="userName" b="2 rounded-2 cool-gray-300" />
     </div>

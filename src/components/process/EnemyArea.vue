@@ -12,25 +12,6 @@ import useUserStore from '~/store/user';
 const roomStore = useRoomStore()
 const userStore = useUserStore()
 const players = computed(()=>roomStore.players.filter(player=>player.id!==userStore.id && player.name !== userStore.name))
-// const players = ref([{
-//   name: 'merlinmerlinmerlinmerlin',
-//   id: '111',
-//   cardNum: 0,
-//   lastCard:{
-//     type: 'number-1',
-//     color: 'red',
-//     icon: 'pixelarticons:downasaur'
-//   } as CardProps
-// },{
-//   name: 'merlin',
-//   id: '111',
-//   cardNum: 0,
-//   lastCard:{
-//     type: 'number-1',
-//     color: 'green',
-//     icon: 'pixelarticons:downasaur'
-//   } as CardProps
-// }])
 </script>
 
 <style scoped>

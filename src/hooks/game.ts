@@ -10,3 +10,21 @@ export const isInTurn = computed(() => {
   const idx = roomStore.players.findIndex(p => p.id === userStore.id && p.name === userStore.name)
   return idx === roomStore.order
 })
+
+export function useCheckCard(target: CardProps): boolean {
+  const lastCard = roomStore.lastCard
+  if(!lastCard || isUniversalCard(target)) return true;
+  return isSameColor(target,lastCard) || isSameType(target,lastCard);
+}
+
+function isSameColor(target: CardProps, lastCard: CardProps) {
+  return target.color === lastCard.color
+}
+
+function isSameType(target: CardProps, lastCard: CardProps) {
+  return target.type === lastCard.type
+}
+
+function isUniversalCard(target:CardProps){
+  return target.type === 'palette' || target.type === 'add-4';
+}
