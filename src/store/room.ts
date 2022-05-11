@@ -21,8 +21,14 @@ export const useRoomStore = defineStore('game', {
     setRoomInfo(roomInfo: RoomInfo) {
       this._roomInfo = roomInfo
     },
+    setRoomInfoProp<T extends keyof RoomInfo>(key: T,val: RoomInfo[T]){
+      this._roomInfo[key] = val;
+    },
     updatePlayers(players: PlayerInfo[]) {
       this._roomInfo.players = players
+    },
+    setUserCards(cards:CardProps[]){
+      this._userCards = cards
     },
     addUserCards(cards: CardProps[] | undefined) {
       if (!cards) return;

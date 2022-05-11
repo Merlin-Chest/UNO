@@ -1,9 +1,47 @@
 <template>
   <div flex w="100%" h="100%" flex-col items-center justify="between" overflow="hidden" m="auto">
     <enemy-area></enemy-area>
-    <CardArea w="90%"></CardArea>
+    <CardArea position="relative" bottom="-8" w="75%" overflow="visible" @deal-card="handleDealCards"></CardArea>
   </div>
 </template>
 <script setup lang="ts">
+import notify from '~/plugins/notification/notify';
+import { useRoomStore } from '~/store/room';
+import useSocketStore from '~/store/socket';
+
+const socketStore = useSocketStore();
+const roomStore = useRoomStore()
+
+const handleDealCards = (cardsIndex:Set<number>)=>{
+  socketStore.outOfCard(Array.from(cardsIndex),roomStore.roomCode).then((res)=>{
+    const {message,data} = res
+    if(message){
+      notify({
+        content:message
+      })
+    }
+    if(data){
+      roomStore.setUserCards(data)
+    }
+  })
+}
+
+onBeforeMount(()=>{
+  socketStore.socket.on('NEXT_TURN',(res)=>{
+    const {message,data:{lastCard,order,players}} = res
+      if (message) {
+        notify({
+          content:message
+        })
+      }
+      roomStore.setRoomInfoProp<'lastCard'>('lastCard',lastCard);
+      roomStore.setRoomInfoProp<'order'>('order',order);
+      roomStore.setRoomInfoProp<'players'>('players',players);
+  })
+})
+
+onBeforeUnmount(()=>{
+  socketStore.socket.off('NEXT_TURN')
+})
 
 </script>

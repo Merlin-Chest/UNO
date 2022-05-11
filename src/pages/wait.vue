@@ -65,11 +65,22 @@ onBeforeMount(()=>{
   // 监听游戏是否开始
   socketStore.socket.on('GAME_IS_START', (res) => {
     const { data:{roomInfo,userCards}, message } = res;
-    if (message && !isOwner.value) {
+    if (message) {
       notify({
         content:message
       })
     }
+    socketStore.socket.once('NEXT_TURN',(res)=>{
+      const {message,data:{lastCard,order,players}} = res
+      if (message) {
+        notify({
+          content:message
+        })
+      }
+      roomStore.setRoomInfoProp<'lastCard'>('lastCard',lastCard);
+      roomStore.setRoomInfoProp<'order'>('order',order);
+      roomStore.setRoomInfoProp<'players'>('players',players);
+    })
     roomStore.setRoomInfo(roomInfo)
     roomStore.addUserCards(userCards);
     router.push('/process')

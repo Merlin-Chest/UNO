@@ -4,31 +4,37 @@
       :key="card.type + card.color" :type="card.type" :color="card.color" :icon="card.icon" @select-card="selectCard(i)"
       @un-select-card="unSelectCard(i)">
     </Card>
+    <div>
+      <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
+      hover="bg-gray text-white" px-3 py-1 @click="handleDealCards">出牌</button>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import {useRoomStore} from '~/store/room';
+import { isInTurn } from '~/hooks/game';
+const emit = defineEmits(['dealCard'])
+
 const roomStore = useRoomStore();
 const cards = computed(() => roomStore.userCards)
 
-const selectList = ref<number[]>([]);
+const selectList = ref<Set<number>>(new Set());
 
 const selectCard = (i: number) => {
   if (i < 0 || i >= cards.value.length) return;
-  selectList.value.push(i);
+  selectList.value.add(i);
+}
+
+const handleDealCards = ()=>{
+  emit('dealCard',selectList.value);
+  selectList.value = new Set();
 }
 
 const unSelectCard = (i: number) => {
   if (i < 0 || i >= cards.value.length) return;
-  let idx = selectList.value.indexOf(i)
-  selectList.value.splice(idx, 1)
+  selectList.value.delete(i)
 }
-
-
-// const resetSelectList = () => {
-//   selectList.value = []
-// }
 
 let area = $ref<HTMLElement>();
 

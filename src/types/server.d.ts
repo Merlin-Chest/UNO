@@ -23,6 +23,10 @@ declare interface ClientToServerEvents {
   }>
   DISSOLVE_ROOM:ClientEventListenersCb<'DISSOLVE_ROOM',string>
   START_GAME:ClientEventListenersCb<'START_GAME',string>
+  OUT_OF_THE_CARD:ClientEventListenersCb<'OUT_OF_THE_CARD',{
+    roomCode:string,
+    cardsIndex:number[]
+  }>
 }
 
 declare interface ServerToClientEvents{
@@ -38,6 +42,12 @@ declare interface ServerToClientEvents{
     userCards:CardProps[]
   }>
   DEAL_CARDS:ServerEventListenersCb<'RES_DEAL_CARDS',CardProps[]>
+  NEXT_TURN:ServerEventListenersCb<'NEXT_TURN',{
+    players:PlayerInfo[],
+    lastCard:CardProps,
+    order:number;
+  }>
+  RES_OUT_OF_THE_CARD:ServerEventListenersCb<'RES_OUT_OF_THE_CARD',CardProps[] | null>
 }
 
 
@@ -47,8 +57,9 @@ declare type ClientEventListenersCb<T, D> = (args: ClientDataType<T, D>) => void
 type ClientKeys = keyof ClientToServerEvents
 type ServerKeys = keyof ServerToClientEvents
 
-declare type ClientRoomKeys = 'CREATE_ROOM'|'JOIN_ROOM'|'START_GAME'|'LEAVE_ROOM'|'DISSOLVE_ROOM'
+declare type ClientRoomKeys = 'CREATE_ROOM'|'JOIN_ROOM'|'LEAVE_ROOM'|'DISSOLVE_ROOM'
 declare type ClientUserKeys = 'CREATE_USER'
+declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'
 
 // declare type Events<T> = {
 //   T: T extends ServerKeys

@@ -145,7 +145,7 @@ export default defineComponent({
   top:8px;
   font-size: 10px;
   background-color: transparent;
-  color:grey
+  color:gray
 }
 .fade-enter-active,
 .fade-leave-active {

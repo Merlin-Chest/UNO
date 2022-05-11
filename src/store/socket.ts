@@ -69,6 +69,16 @@ const useSocketStore = defineStore('socket', {
       })
       return this.Promisify<ServerDataType<'RES_LEAVE_ROOM',null>>('RES_LEAVE_ROOM')
     },
+    outOfCard(cardsIndex:number[],roomCode:string){
+      this.socket.emit('OUT_OF_THE_CARD', {
+        type:'OUT_OF_THE_CARD',
+        data:{
+          cardsIndex,
+          roomCode,
+        }  
+      });
+      return this.Promisify<ServerDataType<'RES_OUT_OF_THE_CARD',CardProps[] | null>>('RES_OUT_OF_THE_CARD')
+    }
   }
 })
 
