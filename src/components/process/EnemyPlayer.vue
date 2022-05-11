@@ -1,18 +1,20 @@
 <template>
-  <div :h="inOrder ? 26 : 22" :w="inOrder ? 44 : 40" flex flex-col items-center justify="between" b="dashed 4 rounded-2" :style="{
+  <div transition="duration-500" :h="inOrder ? 28 : 23" :w="inOrder ? 46 : 42" flex flex-col items-center justify="between" b="dashed 4 rounded-2" :style="{
     borderColor: lastCard?.color || 'gray'
   }" box="border" p-2 m-2>
     <div flex>
-      <img :w="inOrder ? 14 : 10" :h="inOrder ? 14 : 10" :src="avatarSrc" b="rounded-2" />
+      <img transition="duration-500" :w="inOrder ? 14 : 10" :h="inOrder ? 14 : 10" :src="avatarSrc" b="rounded-2" />
       <div flex flex-col items-start :text='inOrder ? 4 : 3' m-l-1>
         <div max-w-12 max-w-20 overflow-hidden text-ellipsis>No.{{ id }}</div>
         <div min-w-8 max-w-20 overflow-hidden text-ellipsis>{{ name }}</div>
       </div>
     </div>
-    <div flex items-center w-4 h-4 lh-4 justify="around" w="100%" m-t-1  :style="{ color: lastCard?.color || 'gray' }">
+    <div flex items-center w-4 h-4 lh-4 justify="around" w="100%" m-t-1 m-b-1  :style="{ color: lastCard?.color || 'gray' }">
       <i w-4 h-4 class="i mdi:cards-outline"></i>
       <div>{{ cardNum }}</div>
-      <i w-4 h-4 :class="iconClass"></i>
+      <div w-6 h-6 border="rounded-2" :style="{ backgroundColor: lastCard?.color || 'gray' }">
+        <i w-6 h-6 style="position:relative;left:4px" flex items-center justify="center" c='white' :class="iconClass"></i>
+      </div>
     </div>
   </div>
 </template>

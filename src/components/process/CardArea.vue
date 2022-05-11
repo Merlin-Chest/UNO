@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import {useRoomStore} from '~/store/room';
 import { isInTurn } from '~/hooks/game';
+import notify from '~/plugins/notification/notify';
 const emit = defineEmits(['dealCard'])
 
 const roomStore = useRoomStore();
@@ -27,6 +28,10 @@ const selectCard = (i: number) => {
 }
 
 const handleDealCards = ()=>{
+  if(selectList.value.size === 0){
+    notify({content:'请选择要出的牌'})
+    return;
+  }
   emit('dealCard',selectList.value);
   selectList.value = new Set();
 }

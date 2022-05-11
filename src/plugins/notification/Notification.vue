@@ -57,7 +57,7 @@ export default defineComponent({
     const styleObj = computed<StyleValue>(() => ({
       position: 'fixed',
       right: '20px',
-      bottom: `${props.verticalOffset}px`,
+      top: `${props.verticalOffset}px`,
     }));
 
     const timer = ref(0);

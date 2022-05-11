@@ -29,7 +29,7 @@
    
    for (let i = index; i < len - 1; i++) {
      const inst = instances[i].vm;
-     inst.bottomOffset = inst.bottomOffset - removeHeight - 16;
+     inst.topOffset = inst.topOffset - removeHeight - 16;
    }
  };
  
@@ -46,7 +46,7 @@
    const instance = createApp({
      data() {
        return {
-         bottomOffset: verticalOffset
+         topOffset: verticalOffset
        }
      },
      methods: {
@@ -59,7 +59,7 @@
      render() {
        return h(Notification,{
          ...options,
-         verticalOffset:this.bottomOffset,
+         verticalOffset:this.topOffset,
          onClosed:this.closedFunc
        })
      }
