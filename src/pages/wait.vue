@@ -101,10 +101,17 @@ onUnmounted(()=>{
 
 // 开始游戏
 const startGame = () => {
-  socketStore.startGame(roomCode.value)
+  socketStore.startGame(roomCode.value).then((res)=>{
+    const { message } = res;
+    if(message){
+      notify({
+        content:message
+      })
+    }
+  })
 }
 
-// 解散房间
+// 解散或离开房间
 const dissolveOrLeaveRoom = () => {
   if (isOwner.value) {
     socketStore.dissolveGame(roomCode.value)

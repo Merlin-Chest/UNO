@@ -52,6 +52,7 @@ const useSocketStore = defineStore('socket', {
         type: 'START_GAME',
         data: code
       })
+      return this.Promisify<ServerDataType<'RES_START_GAME',null>>('RES_START_GAME')
     },
     dissolveGame(code: string) {
       this.socket.emit('DISSOLVE_ROOM', {

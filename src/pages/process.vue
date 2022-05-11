@@ -1,7 +1,7 @@
 <template>
   <div flex w="100%" h="100%" flex-col items-center justify="between" overflow="hidden" m="auto">
     <enemy-area></enemy-area>
-    <CardArea position="relative" bottom="-8" w="90%" overflow="visible" @deal-card="handleDealCards"></CardArea>
+    <CardArea position="relative" bottom="-8" w="80%" overflow="visible" @deal-card="handleDealCards"></CardArea>
   </div>
 </template>
 <script setup lang="ts">
