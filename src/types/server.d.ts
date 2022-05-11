@@ -48,6 +48,10 @@ declare interface ServerToClientEvents{
     order:number;
   }>
   RES_OUT_OF_THE_CARD:ServerEventListenersCb<'RES_OUT_OF_THE_CARD',CardProps[] | null>
+  GAME_IS_OVER:ServerEventListenersCb<'GAME_IS_OVER',{
+    endTime:number,
+    winnerOrder:PlayerInfo[]
+  }>
 }
 
 

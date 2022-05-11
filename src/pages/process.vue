@@ -9,6 +9,8 @@ import notify from '~/plugins/notification/notify';
 import { useRoomStore } from '~/store/room';
 import useSocketStore from '~/store/socket';
 
+const router = useRouter()
+
 const socketStore = useSocketStore();
 const roomStore = useRoomStore()
 
@@ -38,10 +40,23 @@ onBeforeMount(()=>{
       roomStore.setRoomInfoProp<'order'>('order',order);
       roomStore.setRoomInfoProp<'players'>('players',players);
   })
+  socketStore.socket.on('GAME_IS_OVER',(res)=>{
+    const {message,data:{winnerOrder,endTime}} = res
+      if (message) {
+        notify({
+          content:message
+        })
+      }
+      roomStore.setRoomInfoProp<'winnerOrder'>('winnerOrder',winnerOrder);
+      roomStore.setRoomInfoProp<'endTime'>('endTime',endTime);
+      router.push('/end')
+  })
 })
 
 onBeforeUnmount(()=>{
   socketStore.socket.off('NEXT_TURN')
+  socketStore.socket.off('GAME_IS_OVER')
+  socketStore.socket.off('UPDATE_PLAYER_LIST');
 })
 
 </script>

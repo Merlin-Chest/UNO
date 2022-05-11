@@ -71,12 +71,7 @@ onBeforeMount(()=>{
       })
     }
     socketStore.socket.once('NEXT_TURN',(res)=>{
-      const {message,data:{lastCard,order,players}} = res
-      if (message) {
-        notify({
-          content:message
-        })
-      }
+      const {data:{lastCard,order,players}} = res
       roomStore.setRoomInfoProp<'lastCard'>('lastCard',lastCard);
       roomStore.setRoomInfoProp<'order'>('order',order);
       roomStore.setRoomInfoProp<'players'>('players',players);
@@ -101,7 +96,6 @@ onBeforeMount(()=>{
 })
 
 onBeforeUnmount(()=>{
-  socketStore.socket.off('UPDATE_PLAYER_LIST');
   socketStore.socket.off('GAME_IS_START');
   socketStore.socket.off('RES_DISSOLVE_ROOM');
 })

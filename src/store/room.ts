@@ -15,7 +15,10 @@ export const useRoomStore = defineStore('game', {
     userCards: (state) => state._userCards,
     roomCode: (state) => state._roomInfo.roomCode,
     gameCards: (state) => state._roomInfo.gameCards,
-    order:(state)=>state._roomInfo.order
+    order:(state)=>state._roomInfo.order,
+    startTime:(state)=>state._roomInfo.startTime,
+    endTime:(state)=>state._roomInfo.endTime,
+    winnerOrder:(state)=>state._roomInfo.winnerOrder
   },
   actions: {
     setRoomInfo(roomInfo: RoomInfo) {
