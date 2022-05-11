@@ -30,8 +30,7 @@ const gameTime = computed(() => roomStore.endTime - roomStore.startTime)
 const winnerOrder = computed(() => roomStore.winnerOrder)
 
 const backToIndex = () => {
-  roomStore.cleanRoom();
-  router.push('/')
+  roomStore.cleanRoom(router);
 }
 
 </script>

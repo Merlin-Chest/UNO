@@ -53,7 +53,7 @@ onBeforeMount(()=>{
   })
 })
 
-onBeforeUnmount(()=>{
+onUnmounted(()=>{
   socketStore.socket.off('NEXT_TURN')
   socketStore.socket.off('GAME_IS_OVER')
   socketStore.socket.off('UPDATE_PLAYER_LIST');

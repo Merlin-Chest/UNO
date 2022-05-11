@@ -10,7 +10,8 @@
         加入房间
       </label>
       <label>
-        <input type="radio" name="room" value="createRoom" @change="roomType = 'createRoom'">创建房间
+        <input type="radio" name="room" value="createRoom" @change="roomType = 'createRoom'">
+        创建房间
       </label>
     </div>
     <div>

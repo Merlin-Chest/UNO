@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia'
+import { Router } from 'vue-router';
 
 export const useRoomStore = defineStore('game', {
   state: () => {
@@ -55,7 +56,8 @@ export const useRoomStore = defineStore('game', {
         return prev;
       }, [] as CardProps[])
     },
-    cleanRoom() {
+    cleanRoom(router:Router) {
+      router.push('/')
       this._userCards = [];
       this._roomInfo = {} as RoomInfo;
     }

@@ -90,12 +90,11 @@ onBeforeMount(()=>{
         content:message
       })
     }
-    router.push('/')
-    roomStore.cleanRoom();
+    roomStore.cleanRoom(router);
   })
 })
 
-onBeforeUnmount(()=>{
+onUnmounted(()=>{
   socketStore.socket.off('GAME_IS_START');
   socketStore.socket.off('RES_DISSOLVE_ROOM');
 })
@@ -117,7 +116,7 @@ const dissolveOrLeaveRoom = () => {
           content:message
         })
       }
-      router.push('/')
+      roomStore.cleanRoom(router);
     })
   }
 }
