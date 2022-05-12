@@ -27,6 +27,8 @@ declare interface ClientToServerEvents {
     roomCode:string,
     cardsIndex:number[]
   }>
+  GET_ONE_CARD:ClientEventListenersCb<'GET_ONE_CARD',string>
+  NEXT_TURN:ClientEventListenersCb<'NEXT_TURN',string>
 }
 
 declare interface ServerToClientEvents{
@@ -52,6 +54,11 @@ declare interface ServerToClientEvents{
     endTime:number,
     winnerOrder:PlayerInfo[]
   }>
+  RES_GET_ONE_CARD:ServerEventListenersCb<'RES_OUT_OF_THE_CARD',{
+    card:CardProps;
+    userCards:CardProps[]
+  }>
+  RES_NEXT_TURN:ServerEventListenersCb<'RES_NEXT_TURN',null>
 }
 
 
@@ -63,7 +70,7 @@ type ServerKeys = keyof ServerToClientEvents
 
 declare type ClientRoomKeys = 'CREATE_ROOM'|'JOIN_ROOM'|'LEAVE_ROOM'|'DISSOLVE_ROOM'
 declare type ClientUserKeys = 'CREATE_USER'
-declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'
+declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'|'GET_ONE_CARD'|'NEXT_TURN'
 
 // declare type Events<T> = {
 //   T: T extends ServerKeys
@@ -75,8 +82,7 @@ declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'
 
 declare type Controllers<T extends keyof EToD, S, I> = {
   [K in T]: (args: K extends keyof ClientToServerEvents ? GetDataTypeOfEventName<K> : unknown, sc: S, io: I)
-  => ServerDataType<addRESPrefix<K>,
-  addRESPrefix<K> extends keyof ClientToServerEvents ? GetDataTypeOfEventName<addRESPrefix<K>> : unknown>
+  => addRESPrefix<K> extends keyof ClientToServerEvents ? ServerDataType<addRESPrefix<K>,GetDataTypeOfEventName<addRESPrefix<K>>> : void
 }
 
 declare interface InterServerEvents {

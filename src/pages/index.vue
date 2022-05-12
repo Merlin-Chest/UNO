@@ -22,7 +22,7 @@
 </template>
 
 <script setup lang="ts">
-import notify from '~/plugins/notification/notify';
+import { useNotify } from '~/composables';
 import { useRoomStore } from '~/store/room';
 import useSocketStore from '~/store/socket';
 import useUserStore from '~/store/user';
@@ -39,15 +39,11 @@ const roomStore = useRoomStore()
 
 const handleClick = () => {
   if (!userName) {
-    notify({
-      content:'请输入昵称',
-    })
+    useNotify('请输入昵称')
     return
   }
   if (!roomAns) {
-    notify({
-      content:'请输入' + roomTip.value,
-    })
+    useNotify('请输入' + roomTip.value)
     return
   }
   socketStore.createUser(userName).then((res) => {
@@ -56,11 +52,7 @@ const handleClick = () => {
     return socketStore[roomType.value](roomAns, userStore.getUserInfo())
   }).then((res) => {
     const {data:roomInfo,message} = res
-    if(message){
-      notify({
-        content:message
-      })
-    }
+    useNotify(message)
     if(roomInfo){
       roomStore.setRoomInfo(roomInfo)
       router.push('/wait')

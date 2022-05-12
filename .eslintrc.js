@@ -13,7 +13,7 @@ module.exports = {
     sourceType: 'module',
   },
   plugins: [
-    'vue',
+    'vue/recommend',
     '@typescript-eslint',
   ],
   overrides: [

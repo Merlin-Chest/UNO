@@ -17,18 +17,18 @@ import { store } from './store'
 app.use(store)
 
 // 路由管理
-import routes from 'virtual:generated-pages'
-import { createRouter, createWebHistory } from 'vue-router'
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes,
-})
+import router from './router'
+app.use(router)
+
 
 // 全局通知
 import Notification from './plugins/notification'
 app.use(Notification)
 
-app.use(router)
+// 全局弹窗
+import Dialog from './plugins/dialog'
+app.use(Dialog)
+
 app.mount('#app')
 
 app.config.errorHandler = (err)=>{

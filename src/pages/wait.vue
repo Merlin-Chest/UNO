@@ -32,7 +32,7 @@ import useSocketStore from '~/store/socket';
 import PlayerInfo from '~/components/wait/PlayerInfo.vue';
 import useUserStore from '~/store/user';
 import { useClipboard } from '@vueuse/core'
-import notify from '~/plugins/notification/notify';
+import { useNotify } from '~/composables';
 
 
 const roomStore = useRoomStore()
@@ -54,22 +54,14 @@ onBeforeMount(()=>{
   // 监听玩家列表变化
   socketStore.socket.on('UPDATE_PLAYER_LIST', (res) => {
     const { data: players, message } = res;
-    if (message) {
-      notify({
-        content:message
-      })
-    }
+    useNotify(message);
     roomStore.updatePlayers(players)
   })
 
   // 监听游戏是否开始
   socketStore.socket.on('GAME_IS_START', (res) => {
     const { data:{roomInfo,userCards}, message } = res;
-    if (message) {
-      notify({
-        content:message
-      })
-    }
+    useNotify(message);
     socketStore.socket.once('NEXT_TURN',(res)=>{
       const {data:{lastCard,order,players}} = res
       roomStore.setRoomInfoProp<'lastCard'>('lastCard',lastCard);
@@ -78,18 +70,15 @@ onBeforeMount(()=>{
     })
     roomStore.setRoomInfo(roomInfo)
     roomStore.addUserCards(userCards);
-    router.push('/process')
+  useNotify('game start')
+router.push('/process')
   })
 
 
   // 监听房间是否解散
   socketStore.socket.on('RES_DISSOLVE_ROOM', (res) => {
     const { message } = res;
-    if (message) {
-      notify({
-        content:message
-      })
-    }
+    useNotify(message);
     roomStore.cleanRoom(router);
   })
 })
@@ -103,11 +92,7 @@ onUnmounted(()=>{
 const startGame = () => {
   socketStore.startGame(roomCode.value).then((res)=>{
     const { message } = res;
-    if(message){
-      notify({
-        content:message
-      })
-    }
+    useNotify(message)
   })
 }
 
@@ -118,11 +103,7 @@ const dissolveOrLeaveRoom = () => {
   } else {
     socketStore.leaveGame(roomCode.value, userStore.getUserInfo()).then((res) => {
       const { message } = res;
-      if(message){
-        notify({
-          content:message
-        })
-      }
+      useNotify(message)
       roomStore.cleanRoom(router);
     })
   }

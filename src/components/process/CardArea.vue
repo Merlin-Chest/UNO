@@ -12,17 +12,17 @@
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
         transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleDealCards">出牌</button>
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
-        transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleDealCards">取牌</button>
+        transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleGetCard">取牌</button>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { useRoomStore } from '~/store/room';
-import { isInTurn } from '~/hooks/game';
-import notify from '~/plugins/notification/notify';
+import { isInTurn, useCheckCard, useNotify } from '~/composables';
 import useSocketStore from '~/store/socket';
 import useUserStore from '~/store/user';
+import Dialog from '~/plugins/dialog/Dialog';
 const emit = defineEmits(['dealCard'])
 const socketStore = useSocketStore()
 const roomStore = useRoomStore();
@@ -39,22 +39,37 @@ const selectCard = (i: number) => {
 const handleLeave = () => {
   socketStore.leaveGame(roomStore.roomCode, userStore.getUserInfo()).then((res) => {
     const { message } = res;
-    if (message) {
-      notify({
-        content: message
-      })
-    }
+    useNotify(message);
     roomStore.cleanRoom(router);
   })
 }
 
 const handleDealCards = () => {
   if (selectList.value.size === 0) {
-    notify({ content: '请选择要出的牌' })
+    useNotify('请选择要出的牌');
     return;
   }
   emit('dealCard', selectList.value);
   selectList.value = new Set();
+}
+
+const handleGetCard = ()=>{
+  socketStore.getOneCard(roomStore.roomCode).then((res)=>{
+    const {data,message} = res;
+    useNotify(message);
+    if(data){
+      const {card,userCards} = data;
+      roomStore.setUserCards(userCards);
+      if(useCheckCard(card)){
+        Dialog({
+          title: '获得的牌符合规则',
+          content:'是否打出此牌？',
+        })
+      }else{
+        socketStore.toNextTurn(roomStore.roomCode)
+      }
+    }
+  })
 }
 
 const unSelectCard = (i: number) => {

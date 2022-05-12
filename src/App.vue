@@ -4,3 +4,6 @@
   </main>
   <Footer bottom='3'/>
 </template>
+
+<script lang="ts" setup>
+</script>

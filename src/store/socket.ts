@@ -79,6 +79,22 @@ const useSocketStore = defineStore('socket', {
         }  
       });
       return this.Promisify<ServerDataType<'RES_OUT_OF_THE_CARD',CardProps[] | null>>('RES_OUT_OF_THE_CARD')
+    },
+    getOneCard(roomCode:string){
+      this.socket.emit('GET_ONE_CARD', {
+        type:'GET_ONE_CARD',
+        data:roomCode 
+      });
+      return this.Promisify<ServerDataType<'RES_GET_ONE_CARD',{
+        card:CardProps,
+        userCards:CardProps[]
+      }>>('RES_GET_ONE_CARD')
+    },
+    toNextTurn(roomCode:string){
+      this.socket.emit('NEXT_TURN', {
+        type:'NEXT_TURN',
+        data:roomCode 
+      });
     }
   }
 })

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { useCheckCard } from '~/hooks/game';
-import notify from '~/plugins/notification/notify';
+import { useCheckCard, useNotify } from '~/composables';
 
 
 type zeroToNine = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -37,7 +36,7 @@ const canSelect = computed(() => useCheckCard(props))
 const isActive = ref(false);
 const handleClick = () => {
   if (!canSelect.value) {
-    notify({ content: '该牌不能出' })
+    useNotify('该牌不能出')
     return;
   }
   emit(isActive ? 'selectCard' : 'unSelectCard')
