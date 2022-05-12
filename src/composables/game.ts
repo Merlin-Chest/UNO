@@ -11,20 +11,20 @@ export const isInTurn = computed(() => {
   return idx === roomStore.order
 })
 
-export function useCheckCard(target: CardProps): boolean {
+export function useCheckCard(target: CardInfo): boolean {
   const lastCard = roomStore.lastCard
   if(!lastCard || isUniversalCard(target)) return true;
   return isSameColor(target,lastCard) || isSameType(target,lastCard);
 }
 
-function isSameColor(target: CardProps, lastCard: CardProps) {
+function isSameColor(target: CardInfo, lastCard: CardInfo) {
   return target.color === lastCard.color
 }
 
-function isSameType(target: CardProps, lastCard: CardProps) {
+function isSameType(target: CardInfo, lastCard: CardInfo) {
   return target.type === lastCard.type
 }
 
-function isUniversalCard(target:CardProps){
+function isUniversalCard(target:CardInfo){
   return target.type === 'palette' || target.type === 'add-4';
 }

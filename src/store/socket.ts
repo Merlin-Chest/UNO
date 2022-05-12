@@ -78,7 +78,7 @@ const useSocketStore = defineStore('socket', {
           roomCode,
         }  
       });
-      return this.Promisify<ServerDataType<'RES_OUT_OF_THE_CARD',CardProps[] | null>>('RES_OUT_OF_THE_CARD')
+      return this.Promisify<ServerDataType<'RES_OUT_OF_THE_CARD',CardInfo[] | null>>('RES_OUT_OF_THE_CARD')
     },
     getOneCard(roomCode:string){
       this.socket.emit('GET_ONE_CARD', {
@@ -86,8 +86,8 @@ const useSocketStore = defineStore('socket', {
         data:roomCode 
       });
       return this.Promisify<ServerDataType<'RES_GET_ONE_CARD',{
-        card:CardProps,
-        userCards:CardProps[]
+        card:CardInfo,
+        userCards:CardInfo[]
       }>>('RES_GET_ONE_CARD')
     },
     toNextTurn(roomCode:string){

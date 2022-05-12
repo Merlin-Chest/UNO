@@ -6,18 +6,18 @@ declare interface RoomData {
 
 declare interface PlayerInfo extends UserInfo {
   socketId:string,
-  lastCard:CardProps | null,
+  lastCard:CardInfo | null,
   cardNum:number,
-  cards:CardProps[] | null
+  cards:CardInfo[] | null
 }
 
 declare type RoomInfo = RoomData & {
   roomCode:string;
-  gameCards: CardProps[];
+  gameCards: CardInfo[];
   userCards: {
-    [key: string]: CardProps[]
+    [key: string]: CardInfo[]
   };
-  lastCard:CardProps | null;
+  lastCard:CardInfo | null;
   players:PlayerInfo[];
   order: number;
   status:'WAITING'|'GAMING'|'END'

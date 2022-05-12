@@ -1,14 +1,20 @@
 /**
  * 创建弹窗插件的调用方法
  */
-import { createApp } from 'vue';
+import { createApp,App } from 'vue';
 import DialogVue from './Dialog.vue';
 
 export type OptionsType = {
   title: string,
   content:string,
-  beforeClose?:Function
+  comfirm?:(close:Function)=>void
+  cancel?:(close:Function)=>void
 };
+
+const removeInstance = (app:App<Element>,container:Element)=>{
+  app.unmount()
+  document.body.removeChild(container)
+}
 
 const Dialog = (options: OptionsType): void => {
   const container = document.createElement('div');
@@ -20,20 +26,28 @@ const Dialog = (options: OptionsType): void => {
 
   const app = createApp({
     methods:{
-      closeDialog:()=>{
-        options.beforeClose && options.beforeClose();
-        app.unmount()
-        document.body.removeChild(container)
+      closeDialog(){
+        removeInstance(app,container)
+      },
+      handleConfirm(){
+        options.comfirm && options.comfirm(this.closeDialog)
+      },
+      handleCancel(){
+        options.cancel && options.cancel(this.closeDialog)
       }
     },
     render() {
       return h(DialogVue, {
         ...options,
         visible:true,
-        onClose: this.closeDialog
+        onBeforeClose: this.closeDialog,
+        onConfirm:this.handleConfirm,
+        onCancel:this.handleCancel
       })
     }
   })
+
+  
 
   app.mount(container)
 };

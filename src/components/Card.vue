@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useCheckCard, useNotify } from '~/composables';
+import { useRoomStore } from '~/store/room';
 
 
 type zeroToNine = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -11,20 +12,11 @@ type CardOtherType = 'add-2' | 'add-4' | 'exchange' | 'palette' | 'ban'
 interface CardProps {
   icon: string,
   type: CardNumberType<zeroToNine> | CardOtherType
-  color: cardColor | string
+  color: cardColor | string,
+  order:number
 }
 
-const props = withDefaults(defineProps<CardProps>(), {
-  type: 'number-0',
-  color: '',
-  icon: '',
-})
-const emit = defineEmits(['selectCard', 'unSelectCard']);
-// const content = computed(() => {
-//   if (props.type.startsWith('number-'))
-//     return props.type.replace('number-', '')
-//   else return props.type
-// })
+const props = defineProps<CardProps>()
 
 // 样式相关
 const bgColor = computed(() => `${props.color}`)
@@ -33,14 +25,20 @@ const containerClass = computed(() => isActive.value ? 'container translate-y--8
 
 const canSelect = computed(() => useCheckCard(props))
 
-const isActive = ref(false);
+const roomStore = useRoomStore()
+const isActive = computed(()=>roomStore.selectCards.has(props.order));
+
 const handleClick = () => {
   if (!canSelect.value) {
     useNotify('该牌不能出')
     return;
   }
-  emit(isActive ? 'selectCard' : 'unSelectCard')
-  isActive.value = !isActive.value
+  if(isActive.value){
+    roomStore.unSelectCard(props.order)
+  }else{
+    console.log('111:', 111)
+    roomStore.selectCard(props.order)
+  }
 }
 </script>
 

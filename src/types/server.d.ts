@@ -39,24 +39,24 @@ declare interface ServerToClientEvents{
   RES_DISSOLVE_ROOM:ServerEventListenersCb<'RES_DISSOLVE_ROOM',null>
   UPDATE_PLAYER_LIST:ServerEventListenersCb<'UPDATE_PLAYER_LIST',PlayerInfo[]>
   UPDATE_ROOM_INFO:ServerEventListenersCb<'UPDATE_ROOM_INFO',RoomInfo>
-  GAME_IS_START:ServerEventListenersCb<'GAME_IS_START',{roomInfo:RoomInfo,userCards:CardProps[]}>
+  GAME_IS_START:ServerEventListenersCb<'GAME_IS_START',{roomInfo:RoomInfo,userCards:CardInfo[]}>
   RES_START_GAME:ServerEventListenersCb<'RES_START_GAME',{
-    userCards:CardProps[]
+    userCards:CardInfo[]
   }>
-  DEAL_CARDS:ServerEventListenersCb<'RES_DEAL_CARDS',CardProps[]>
+  DEAL_CARDS:ServerEventListenersCb<'RES_DEAL_CARDS',CardInfo[]>
   NEXT_TURN:ServerEventListenersCb<'NEXT_TURN',{
     players:PlayerInfo[],
-    lastCard:CardProps,
+    lastCard:CardInfo,
     order:number;
   }>
-  RES_OUT_OF_THE_CARD:ServerEventListenersCb<'RES_OUT_OF_THE_CARD',CardProps[] | null>
+  RES_OUT_OF_THE_CARD:ServerEventListenersCb<'RES_OUT_OF_THE_CARD',CardInfo[] | null>
   GAME_IS_OVER:ServerEventListenersCb<'GAME_IS_OVER',{
     endTime:number,
     winnerOrder:PlayerInfo[]
   }>
   RES_GET_ONE_CARD:ServerEventListenersCb<'RES_OUT_OF_THE_CARD',{
-    card:CardProps;
-    userCards:CardProps[]
+    card:CardInfo;
+    userCards:CardInfo[]
   }>
   RES_NEXT_TURN:ServerEventListenersCb<'RES_NEXT_TURN',null>
 }

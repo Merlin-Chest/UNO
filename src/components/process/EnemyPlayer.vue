@@ -26,7 +26,7 @@ export interface PlayerProps {
   id: string,
   name: string,
   cardNum: number,
-  lastCard: CardProps | null
+  lastCard: CardInfo | null
 }
 
 const props = withDefaults(defineProps<PlayerProps>(), {

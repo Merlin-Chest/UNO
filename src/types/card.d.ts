@@ -5,7 +5,7 @@ type cardColor = '#FF6666'| '#99CC66'| '#99CCFF'| '#FFCC33'
 type CardNumberType<T extends number> = `number-${T}`;
 type CardOtherType = 'add-2' | 'add-4' | 'exchange' | 'palette' | 'ban'
 
-declare interface CardProps {
+declare interface CardInfo {
   icon: string,
   type: CardNumberType<zeroToNine> | CardOtherType
   color:cardColor | string

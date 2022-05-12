@@ -1,18 +1,18 @@
 <template>
   <div v-show="visible" flex flex-col items-center justify="center" w="100%" h="100%" bg="#00000033">
-    <div flex flex-col justify="between" relative w="80" h="50" :bg="isDark ? 'black' : 'white'" b="rounded-4 gray-300 4 dashed">
+    <div flex flex-col justify="between" relative w="80" :bg="isDark ? 'black' : 'white'" b="rounded-4 gray-300 4 dashed">
       <button absolute top="1" right="2" @click="close">X</button>
       <div b="b-4 gray-300 dashed" min-h="10" p="2" c="gray-700 dark:gray-200">
         <slot name="title">
           <h1>{{ title }}</h1>
         </slot>
       </div>
-      <div p="2" overflow="scroll">
+      <div c="gray-700" p="2">
         <slot>
           <div>{{ content }}</div>
         </slot>
       </div>
-      <div flex items-center b="t-4 gray-300 dashed" p-2 justify="around">
+      <div flex items-center b="t-4 gray-300 dashed" p-2 justify="evenly">
         <button text="3.5" c-gray b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
           hover="bg-gray-400 text-white" px-3 py-1 @click="emit('confirm')">
           确认
@@ -35,7 +35,7 @@ interface DialogProps {
   content: string
 }
 
-const emit = defineEmits(['close', 'open', 'confirm', 'cancel'])
+const emit = defineEmits(['beforeClose', 'open', 'confirm', 'cancel'])
 
 withDefaults(defineProps<DialogProps>(), {
   title: '',
@@ -43,7 +43,7 @@ withDefaults(defineProps<DialogProps>(), {
 })
 
 const close = () => {
-  emit('close')
+  emit('beforeClose')
 }
 
 </script>

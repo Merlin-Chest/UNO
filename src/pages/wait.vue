@@ -69,7 +69,7 @@ onBeforeMount(()=>{
       roomStore.setRoomInfoProp<'players'>('players',players);
     })
     roomStore.setRoomInfo(roomInfo)
-    roomStore.addUserCards(userCards);
+    roomStore.setUserCards(userCards);
   useNotify('game start')
 router.push('/process')
   })

@@ -4,9 +4,9 @@
       <button c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
         hover="bg-gray text-white" px-3 py-1 @click="handleLeave">离开房间</button>
     </div>
-    <Card transition="duration-400" v-for="(card, i) in cards"
+    <Card transition="duration-400" v-for="(card, i) in cards" 
       :style="{ marginLeft: i > 0 ? `-${interval}px` : 0, zIndex: i }" :key="card.type + card.color" :type="card.type"
-      :color="card.color" :icon="card.icon" @select-card="selectCard(i)" @un-select-card="unSelectCard(i)">
+      :color="card.color" :icon="card.icon" :order="i">
     </Card>
     <div flex flex-col justify-evenly h="100%">
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
@@ -29,12 +29,7 @@ const roomStore = useRoomStore();
 const userStore = useUserStore()
 const cards = computed(() => roomStore.userCards)
 const router = useRouter()
-const selectList = ref<Set<number>>(new Set());
-
-const selectCard = (i: number) => {
-  if (i < 0 || i >= cards.value.length) return;
-  selectList.value.add(i);
-}
+const selectList = computed(()=>roomStore.selectCards)
 
 const handleLeave = () => {
   socketStore.leaveGame(roomStore.roomCode, userStore.getUserInfo()).then((res) => {
@@ -49,8 +44,12 @@ const handleDealCards = () => {
     useNotify('请选择要出的牌');
     return;
   }
-  emit('dealCard', selectList.value);
-  selectList.value = new Set();
+  if(selectList.value.size > 1){
+    useNotify('请选择一张牌');
+    return;
+  }
+  emit('dealCard', Array.from(selectList.value));
+  roomStore.clearSelectCards()
 }
 
 const handleGetCard = ()=>{
@@ -64,6 +63,21 @@ const handleGetCard = ()=>{
         Dialog({
           title: '获得的牌符合规则',
           content:'是否打出此牌？',
+          comfirm:(close)=>{
+            const idx = roomStore.userCards.findIndex(c=>c.type === card.type && c.color === card.color)
+            socketStore.outOfCard([idx],roomStore.roomCode).then((res)=>{
+              const {message,data}= res
+              if (data) {
+                roomStore.setUserCards(data)
+              }
+              close()
+              useNotify(message);
+            })
+          },
+          cancel:(close)=>{
+            socketStore.toNextTurn(roomStore.roomCode);
+            close()
+          }
         })
       }else{
         socketStore.toNextTurn(roomStore.roomCode)
@@ -72,10 +86,7 @@ const handleGetCard = ()=>{
   })
 }
 
-const unSelectCard = (i: number) => {
-  if (i < 0 || i >= cards.value.length) return;
-  selectList.value.delete(i)
-}
+
 
 let area = $ref<HTMLElement>();
 

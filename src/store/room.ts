@@ -5,7 +5,8 @@ export const useRoomStore = defineStore('game', {
   state: () => {
     return {
       _roomInfo: {} as RoomInfo,
-      _userCards: [] as CardProps[],
+      _userCards: [] as CardInfo[],
+      _selectCards: new Set() as Set<number>
     }
   },
   getters: {
@@ -20,7 +21,8 @@ export const useRoomStore = defineStore('game', {
     startTime:(state)=>state._roomInfo.startTime,
     endTime:(state)=>state._roomInfo.endTime,
     winnerOrder:(state)=>state._roomInfo.winnerOrder,
-    lastCard:(state)=>state._roomInfo.lastCard
+    lastCard:(state)=>state._roomInfo.lastCard,
+    selectCards: (state)=>state._selectCards
   },
   actions: {
     setRoomInfo(roomInfo: RoomInfo) {
@@ -32,30 +34,19 @@ export const useRoomStore = defineStore('game', {
     updatePlayers(players: PlayerInfo[]) {
       this._roomInfo.players = players
     },
-    setUserCards(cards:CardProps[]){
+    setUserCards(cards:CardInfo[]){
       this._userCards = cards
     },
-    addUserCards(cards: CardProps[] | undefined) {
-      if (!cards) return;
-      if (!Array.isArray(this._userCards))
-        this._userCards = []
-      for (const card of cards) {
-        this._userCards.push(card)
-      }
+    selectCard (i: number) {
+      if (i < 0 || i >= this._userCards.length) return;
+      this._selectCards.add(i);
     },
-    removeCard(idx: number) {
-      if (idx < 0 || idx >= this._userCards.length) return -1;
-      return this.userCards.splice(idx, 1)[0];
+    unSelectCard(i: number){
+      if (i < 0 || i >= this._userCards.length) return;
+      this._selectCards.delete(i)
     },
-    removeCards(idxArr: number[]) {
-      if (!idxArr || idxArr.length === 0) return []
-      return this._userCards.reduce((prev, cur, i) => {
-        if (idxArr.includes(i)) {
-          prev.push(cur)
-          this.userCards.splice(i, 1);
-        }
-        return prev;
-      }, [] as CardProps[])
+    clearSelectCards(){
+      this._selectCards = new Set()
     },
     cleanRoom(router:Router) {
       router.push('/')
