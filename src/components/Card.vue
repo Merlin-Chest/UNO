@@ -36,7 +36,6 @@ const handleClick = () => {
   if(isActive.value){
     roomStore.unSelectCard(props.order)
   }else{
-    console.log('111:', 111)
     roomStore.selectCard(props.order)
   }
 }

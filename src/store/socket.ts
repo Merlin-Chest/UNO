@@ -95,6 +95,15 @@ const useSocketStore = defineStore('socket', {
         type:'NEXT_TURN',
         data:roomCode 
       });
+    },
+    submitColor(color:CardColor,roomCode:string){
+      this.socket.emit('SUBMIT_COLOR',{
+        type:'SUBMIT_COLOR',
+        data:{
+          color,
+          roomCode
+        }
+      })
     }
   }
 })

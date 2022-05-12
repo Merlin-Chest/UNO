@@ -9,6 +9,7 @@ export type OptionsType = {
   content:string,
   comfirm?:(close:Function)=>void
   cancel?:(close:Function)=>void
+  showCancel?:boolean
 };
 
 const removeInstance = (app:App<Element>,container:Element)=>{
@@ -40,14 +41,12 @@ const Dialog = (options: OptionsType): void => {
       return h(DialogVue, {
         ...options,
         visible:true,
-        onBeforeClose: this.closeDialog,
+        onClose: this.closeDialog,
         onConfirm:this.handleConfirm,
         onCancel:this.handleCancel
       })
     }
   })
-
-  
 
   app.mount(container)
 };

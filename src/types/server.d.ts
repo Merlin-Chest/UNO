@@ -29,6 +29,10 @@ declare interface ClientToServerEvents {
   }>
   GET_ONE_CARD:ClientEventListenersCb<'GET_ONE_CARD',string>
   NEXT_TURN:ClientEventListenersCb<'NEXT_TURN',string>
+  SUBMIT_COLOR:ClientEventListenersCb<'SUBMIT_COLOR',{
+    color:CardColor,
+    roomCode:string
+  }>
 }
 
 declare interface ServerToClientEvents{
@@ -59,6 +63,8 @@ declare interface ServerToClientEvents{
     userCards:CardInfo[]
   }>
   RES_NEXT_TURN:ServerEventListenersCb<'RES_NEXT_TURN',null>
+  SELECT_COLOR:ServerEventListenersCb<'SELECT_COLOR',null>
+  COLOR_IS_CHANGE:ServerEventListenersCb<'SELECT_COLOR',CardColor>
 }
 
 
@@ -70,7 +76,7 @@ type ServerKeys = keyof ServerToClientEvents
 
 declare type ClientRoomKeys = 'CREATE_ROOM'|'JOIN_ROOM'|'LEAVE_ROOM'|'DISSOLVE_ROOM'
 declare type ClientUserKeys = 'CREATE_USER'
-declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'|'GET_ONE_CARD'|'NEXT_TURN'
+declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'|'GET_ONE_CARD'|'NEXT_TURN'|'SUBMIT_COLOR'
 
 // declare type Events<T> = {
 //   T: T extends ServerKeys
@@ -79,6 +85,8 @@ declare type ClientGameKeys = 'OUT_OF_THE_CARD'|'START_GAME'|'GET_ONE_CARD'|'NEX
 //   ? ClientEventListenersCb<T, T extends keyof EToD ? GetDataTypeOfEventName<T> : unknown>
 //   : unknown;
 // }
+
+declare type ControllerKeys = ClientRoomKeys | ClientUserKeys | ClientGameKeys
 
 declare type Controllers<T extends keyof EToD, S, I> = {
   [K in T]: (args: K extends keyof ClientToServerEvents ? GetDataTypeOfEventName<K> : unknown, sc: S, io: I)
