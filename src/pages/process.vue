@@ -9,19 +9,19 @@
     <Dialog absolute top="0" :visible="showColorPicker" title="选择颜色" @close="showColorPicker = false" @confirm="submitColor" :show-cancel='false'>
       <div flex flex-wrap items-center text-center justify="between">
         <label w="50%">
-          <input type="radio" name="selectColor" value="#FF6666" checked @change="selectColor = '#FF6666'">
+          <input type="radio" value="#FF6666" v-model="selectColor">
           红色
         </label>
         <label w="50%">
-          <input type="radio" name="selectColor" value="#FFCC33" checked @change="selectColor = '#FFCC33'">
+          <input type="radio" value="#FFCC33" v-model="selectColor">
           黄色
         </label >
         <label w="50%">
-          <input type="radio" name="selectColor" value="#99CC66" @change="selectColor = '#99CC66'">
+          <input type="radio" value="#99CC66" v-model="selectColor">
           绿色
         </label>
         <label w="50%">
-          <input type="radio" name="selectColor" value="#99CCFF" @change="selectColor = '#99CCFF'">
+          <input type="radio" value="#99CCFF" v-model="selectColor">
           蓝色
         </label>
     </div>
@@ -44,7 +44,8 @@ const iconClass = computed(() => `i ${roomStore.lastCard?.icon || 'pixelarticons
 const selectColor = ref<CardColor>('#FF6666')
 const showColorPicker = ref(false)
 const submitColor = ()=>{
-  socketStore.submitColor(selectColor.value,roomStore.roomCode)
+  socketStore.submitColor(selectColor.value,roomStore.roomCode);
+  selectColor.value = '#FF6666'
 }
 
 const handleDealCards = (cardsIndex: Set<number>) => {

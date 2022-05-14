@@ -6,11 +6,11 @@
     </div>
     <div flex w-45 justify="between">
       <label>
-        <input type="radio" name="room" value="joinRoom" checked @change="roomType = 'joinRoom'">
+        <input type="radio" value="joinRoom" v-model="roomType">
         加入房间
       </label>
       <label>
-        <input type="radio" name="room" value="createRoom" @change="roomType = 'createRoom'">
+        <input type="radio" value="createRoom" v-model="roomType">
         创建房间
       </label>
     </div>

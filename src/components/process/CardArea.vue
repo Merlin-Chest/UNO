@@ -6,7 +6,8 @@
     </div>
     <div flex box-border items-center justify="start" overflow="y-visible" w="70%" ref="cardArea">
       <Card transition="duration-400" v-for="(card, i) in cards" 
-      :z="i" flex="none" relative :style="{left:interval*(cards.length > 5 ? i : 1)+'px'}" translate="hover:y--8 active:y--8 " :key="card.type + card.color" :type="card.type" :color="card.color" :icon="card.icon" :order="i">
+      :z="i" flex="none" relative :style="{left:interval*(cards.length > 5 ? i : 1)+'px'}" translate="hover:y--8" 
+      :key="card.type + card.color" :type="card.type" :color="card.color" :icon="card.icon" :order="i">
         </Card>
     </div>
     <div w="10%" flex flex-col justify-evenly h="100%">
