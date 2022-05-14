@@ -11,7 +11,7 @@ import useUserStore from '~/store/user';
 
 const roomStore = useRoomStore()
 const userStore = useUserStore()
-const players = computed(()=>roomStore.players.filter(player=>player.id!==userStore.id && player.name !== userStore.name))
+const players = computed(()=>roomStore?.players?.filter(player=>player.id!==userStore.id && player.name !== userStore.name))
 </script>
 
 <style scoped>

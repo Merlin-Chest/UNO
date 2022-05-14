@@ -42,10 +42,10 @@ const handleClick = () => {
 </script>
 
 <template>
-  <div :class="containerClass" :style="{ backgroundColor: canSelect ? bgColor : bgColor + '22' }" transition="duration-150"
-    w-30 h-40 inline-block flex justify-between hover="translate-y--8" @click="handleClick">
-    <i :class="iconClass" m="l-2 t-1" />
-    <i :class="iconClass" lh="70" m="r-2" />
+  <div :class="containerClass" :style="{ backgroundColor: canSelect ? bgColor : bgColor + '22' }"
+    w-30 h-40 relative justify-between @click="handleClick">
+    <i :class="iconClass" absolute top-1 left-2/>
+    <i :class="iconClass" absolute bottom-1 right-2/>
   </div>
 </template>
 
@@ -65,6 +65,5 @@ const handleClick = () => {
   font-size: 20px;
   text-align: center;
   color: white;
-  height: 100%;
 }
 </style>

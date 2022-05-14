@@ -1,14 +1,15 @@
 <template>
-  <div flex justify-around items-center ref="area" h="30">
-    <div flex flex-col justify-evenly h="100%">
+  <div flex justify-around items-center h="26">
+    <div w="10%" flex flex-col justify-evenly h="100%">
       <button c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
         hover="bg-gray text-white" px-3 py-1 @click="handleLeave">离开房间</button>
     </div>
-    <Card transition="duration-400" v-for="(card, i) in cards" 
-      :style="{ marginLeft: i > 0 ? `-${interval}px` : 0, zIndex: i }" :key="card.type + card.color" :type="card.type"
-      :color="card.color" :icon="card.icon" :order="i">
-    </Card>
-    <div flex flex-col justify-evenly h="100%">
+    <div flex box-border items-center justify="start" overflow="y-visible" w="70%" ref="cardArea">
+      <Card transition="duration-400" v-for="(card, i) in cards" 
+      :z="i" flex="none" relative :style="{left:interval*(cards.length > 5 ? i : 1)+'px'}" translate="hover:y--8 active:y--8 " :key="card.type + card.color" :type="card.type" :color="card.color" :icon="card.icon" :order="i">
+        </Card>
+    </div>
+    <div w="10%" flex flex-col justify-evenly h="100%">
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
         transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleDealCards">出牌</button>
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
@@ -29,7 +30,7 @@ const roomStore = useRoomStore();
 const userStore = useUserStore()
 const cards = computed(() => roomStore.userCards)
 const router = useRouter()
-const selectList = computed(()=>roomStore.selectCards)
+const selectList = computed(() => roomStore.selectCards)
 
 const handleLeave = () => {
   socketStore.leaveGame(roomStore.roomCode, userStore.getUserInfo()).then((res) => {
@@ -44,7 +45,7 @@ const handleDealCards = () => {
     useNotify('请选择要出的牌');
     return;
   }
-  if(selectList.value.size > 1){
+  if (selectList.value.size > 1) {
     useNotify('请选择一张牌');
     return;
   }
@@ -52,21 +53,21 @@ const handleDealCards = () => {
   roomStore.clearSelectCards()
 }
 
-const handleGetCard = ()=>{
-  socketStore.getOneCard(roomStore.roomCode).then((res)=>{
-    const {data,message} = res;
+const handleGetCard = () => {
+  socketStore.getOneCard(roomStore.roomCode).then((res) => {
+    const { data, message } = res;
     useNotify(message);
-    if(data){
-      const {card,userCards} = data;
+    if (data) {
+      const { card, userCards } = data;
       roomStore.setUserCards(userCards);
-      if(useCheckCard(card)){
+      if (useCheckCard(card)) {
         Dialog({
           title: '获得的牌符合规则',
-          content:'是否打出此牌？',
-          comfirm:(close)=>{
-            const idx = roomStore.userCards.findIndex(c=>c.type === card.type && c.color === card.color)
-            socketStore.outOfCard([idx],roomStore.roomCode).then((res)=>{
-              const {message,data}= res
+          content: '是否打出此牌？',
+          comfirm: (close) => {
+            const idx = roomStore.userCards.findIndex(c => c.type === card.type && c.color === card.color)
+            socketStore.outOfCard([idx], roomStore.roomCode).then((res) => {
+              const { message, data } = res
               if (data) {
                 roomStore.setUserCards(data)
               }
@@ -74,12 +75,12 @@ const handleGetCard = ()=>{
               useNotify(message);
             })
           },
-          cancel:(close)=>{
+          cancel: (close) => {
             socketStore.toNextTurn(roomStore.roomCode);
             close()
           }
         })
-      }else{
+      } else {
         socketStore.toNextTurn(roomStore.roomCode)
       }
     }
@@ -88,13 +89,16 @@ const handleGetCard = ()=>{
 
 
 
-let area = $ref<HTMLElement>();
+let cardArea = $ref<HTMLElement>();
 
 const interval = computed(() => {
-  if (!cards.value?.length || cards.value.length === 0 || !area) return 0;
-  const cardWidth = area.children[0].clientWidth;
-  const res = (area.offsetWidth - cardWidth) / (cards.value.length - 1)
-  return res;
+  if (!cards.value?.length || cards.value.length === 0 || !cardArea) return 0;
+  const cardWidth = cardArea.children[0].clientWidth;
+  const cardAreaWidth = cardArea.clientWidth;
+  console.log('cardWidth:', cardWidth)
+  console.log('cardAreaWidth:', cardAreaWidth)
+  if(cards.value.length < 5) return (cardAreaWidth - cardWidth * cards.value.length) /  2;
+  return -1 * (cardWidth * cards.value.length - cardAreaWidth) / (cards.value.length - 1);
 })
 
 </script>
