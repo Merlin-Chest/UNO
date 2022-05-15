@@ -3,7 +3,7 @@
     <div flex flex-wrap items-center justify="between">
       <div w-40 text-start display="none sm:block">ID：{{ roomId }}</div>
       <div flex-1>房间号:
-        <button flex-1 b="b-4 dashed transparent hover:red" @click="copy()">{{ roomCode }}</button>
+        <button flex-1 b="b-4 dashed transparent hover:red" @click="copyCode">{{ roomCode }}</button>
       </div>
       <div w-40 text-end display="none sm:block">{{ roomName }}</div>
     </div>
@@ -46,6 +46,11 @@ const players = computed(() => roomStore.players)
 const isOwner = computed(() => roomStore?.owner?.id === userStore?.id && roomStore?.owner?.name === userStore?.name)
 
 const { copy } = useClipboard({ source: roomCode })
+
+const copyCode =()=>{
+  copy();
+  useNotify('复制成功')
+}
 
 const router = useRouter()
 
