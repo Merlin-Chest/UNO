@@ -27,10 +27,17 @@ const canSelect = computed(() => useCheckCard(props))
 </script>
 
 <template>
-  <div class="container" :style="{ backgroundColor: canSelect ? bgColor : bgColor + '22' }"
+  <div class="container" 
+  :style="{ 
+    backgroundColor: canSelect ? bgColor : bgColor + '11', 
+    }"
     w="20 sm:30" h="30 sm:40" relative justify-between>
-    <i :class="iconClass" absolute top-1 left-2/>
-    <i :class="iconClass" absolute bottom-1 right-2/>
+    <i :class="iconClass" absolute top-1 left-2 :style="{
+      color: canSelect ? 'white' : 'transparent'
+    }" />
+    <i :class="iconClass" absolute bottom-1 right-2 :style="{
+      color: canSelect ? 'white' : 'transparent'
+    }" />
   </div>
 </template>
 

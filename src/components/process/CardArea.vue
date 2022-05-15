@@ -129,8 +129,6 @@ const interval = computed<number>(() => {
   if (!cards.value?.length || cards.value.length === 0 || !cardArea) return 0;
   const cardWidth = cardArea.children[0].clientWidth;
   const cardAreaWidth = cardArea.clientWidth;
-  console.log('cardWidth:', cardWidth)
-  console.log('cardAreaWidth:', cardAreaWidth)
   if (cards.value.length < containNum.value) return (cardAreaWidth - cardWidth * cards.value.length) / 2;
   return -1 * (cardWidth * cards.value.length - cardAreaWidth) / (cards.value.length - 1);
 })
