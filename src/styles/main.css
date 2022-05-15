@@ -17,3 +17,8 @@ body,
 html.dark {
   background: #121212;
 }
+
+::-webkit-scrollbar{
+  width: 0px;
+  height: 0px;
+ }

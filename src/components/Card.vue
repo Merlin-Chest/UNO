@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { isInTurn, useCheckCard, useNotify } from '~/composables';
-import { useRoomStore } from '~/store/room';
+import { useCheckCard } from '~/composables';
 
 
 type zeroToNine = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
@@ -22,33 +21,14 @@ const props = defineProps<CardProps>()
 // 样式相关
 const bgColor = computed(() => `${props.color}`)
 const iconClass = computed(() => `i ${props.icon}`)
-const containerClass = computed(() => isActive.value ? 'container translate-y-0' : 'container')
 
 const canSelect = computed(() => useCheckCard(props))
 
-const roomStore = useRoomStore()
-const isActive = computed(()=>roomStore.selectCards.has(props.order));
-
-const handleClick = () => {
-  if(!isInTurn.value){
-    useNotify('不在出牌阶段')
-    return;
-  }
-  if (!canSelect.value) {
-    useNotify('该牌不能出')
-    return;
-  }
-  if(isActive.value){
-    roomStore.unSelectCard(props.order)
-  }else{
-    roomStore.selectCard(props.order)
-  }
-}
 </script>
 
 <template>
-  <div :class="containerClass" :style="{ backgroundColor: canSelect ? bgColor : bgColor + '22' }"
-    w="20 sm:30" h="30 sm:40" relative justify-between @click="handleClick">
+  <div class="container" :style="{ backgroundColor: canSelect ? bgColor : bgColor + '22' }"
+    w="20 sm:30" h="30 sm:40" relative justify-between>
     <i :class="iconClass" absolute top-1 left-2/>
     <i :class="iconClass" absolute bottom-1 right-2/>
   </div>

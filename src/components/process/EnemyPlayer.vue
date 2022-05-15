@@ -1,8 +1,11 @@
 <template>
-  <div transition="duration-500" max-h="18 sm:26" max-w="30 sm:42" min-w="26 sm:38" flex flex-col items-center text-start
-    justify="center" b="dashed 4 rounded-2" :style="{
+  <div transition="duration-500" :min-h="inOrder ? '20 sm:26' : '16 sm:22'" 
+  :min-w="inOrder ? '28 sm:48' : '24 sm:40'" flex flex-col items-center text-start
+    justify="center" b="dashed 4 rounded-2" 
+    :style="{
       borderColor: lastCard?.color || 'gray'
-    }" box="border" p="2 sm:3" m-2>
+    }" 
+    box="border" p="2 sm:3" m-2>
     <div w="100%" flex justify="start">
       <img display="none sm:block" transition="duration-500" :w="inOrder ? 13 : 10" :h="inOrder ? 13 : 10"
         :src="avatarSrc" b="rounded-2" />

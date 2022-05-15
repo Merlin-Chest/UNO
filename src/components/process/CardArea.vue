@@ -1,9 +1,10 @@
 <template>
-  <div flex flex-col justify-evenly items-center h="60 sm:80">
-    <div flex="nowrap inline" w="100%" h="40 sm:60" ref="cardArea">
+  <div flex flex-col justify-evenly items-center h="60 sm:80" >
+    <div flex="nowrap inline items-center" w="100%" h="40 sm:60" ref="cardArea">
       <Card transition="duration-400" v-for="(card, i) in cards" :z="i" flex="none" relative :card-id="card.cardId"
-      :style="{ left: interval * (cards.length > containNum ? i : 1) + 'px' }" translate="y-10" :key="card.cardId"
-        :type="card.type" :color="card.color" :icon="card.icon" :order="i" >
+      :style="{ left: interval * (cards.length > containNum ? i : 1) + 'px' }" :key="card.cardId"
+        :type="card.type" :color="card.color" :icon="card.icon" :order="i" @click="handleClickCard(card,i)" 
+         :translate="isActive(i) ? 'y-0' : 'y-8'">
       </Card>
     </div>
     <div flex justify-evenly w="100%">
@@ -43,6 +44,28 @@ const handleLeave = () => {
       })  
     }
   })
+}
+
+const isActive = computed(()=>{
+  return (i:number)=>{
+    return roomStore.selectCards.has(i);
+  }
+})
+
+const handleClickCard =(card:CardInfo,i:number)=>{
+  if(!isInTurn.value){
+    useNotify('不在出牌阶段')
+    return;
+  }
+  if (!useCheckCard(card)) {
+    useNotify('该牌不能出')
+    return;
+  }
+  if(roomStore.selectCards.has(i)){
+    roomStore.unSelectCard(i)
+  }else{
+    roomStore.selectCard(i)
+  }
 }
 
 const handleDealCards = () => {
@@ -108,7 +131,7 @@ const interval = computed<number>(() => {
   const cardAreaWidth = cardArea.clientWidth;
   console.log('cardWidth:', cardWidth)
   console.log('cardAreaWidth:', cardAreaWidth)
-  if (cards.value.length < 5) return (cardAreaWidth - cardWidth * cards.value.length) / 2;
+  if (cards.value.length < containNum.value) return (cardAreaWidth - cardWidth * cards.value.length) / 2;
   return -1 * (cardWidth * cards.value.length - cardAreaWidth) / (cards.value.length - 1);
 })
 

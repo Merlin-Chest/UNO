@@ -1,5 +1,5 @@
 <template>
-  <div flex w="100%" h="100%" flex-col items-center justify="between" overflow="hidden" m="auto">
+  <div flex w="100%" h="100%" flex-col items-center justify="between" m="auto">
     <enemy-area></enemy-area>
     <i w-25 h-25  :style="{ color: gameLastCard?.color+'66' || '#9a9a9a66',fontSize:'8rem' }" flex
       items-center justify="center" :class="iconClass" relative left="7"></i>

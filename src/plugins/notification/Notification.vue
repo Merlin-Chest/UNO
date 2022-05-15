@@ -14,7 +14,7 @@
   </transition>
 </template>
 
-<script set lang="ts">
+<script lang="ts">
 import {
   defineComponent,
   reactive,
