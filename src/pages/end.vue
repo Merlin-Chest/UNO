@@ -1,9 +1,9 @@
 <template>
   <div flex="col" w="100%" h="100%" text="4 sm:6" c="gray" justify-around items-center>
-    <div flex flex-col justify-center items-center h="20%">
+    <!-- <div flex flex-col justify-center items-center h="20%">
       游戏时长
       <div>{{ timestampDiff(gameTime) }}</div>
-    </div>
+    </div> -->
     <div flex flex-col justify-center items-center h="50%">
       游戏排名
       <div flex flex-col b="x-1 t-1">
@@ -23,11 +23,11 @@
 
 <script setup lang="ts">
 import { useRoomStore } from '~/store/room';
-import { timestampDiff } from '~/utils';
+// import { timestampDiff } from '~/utils';
 const router = useRouter()
 const roomStore = useRoomStore();
 
-const gameTime = computed(() => roomStore.endTime - roomStore.startTime)
+// const gameTime = computed(() => roomStore.endTime - roomStore.startTime)
 const winnerOrder = computed(() => roomStore.winnerOrder)
 
 const backToIndex = () => {

@@ -2,7 +2,7 @@
   <div flex flex-col justify-evenly items-center h="60 sm:80">
     <div flex="nowrap inline" w="100%" h="40 sm:60" ref="cardArea">
       <Card transition="duration-400" v-for="(card, i) in cards" :z="i" flex="none" relative :card-id="card.cardId"
-      :style="{ left: interval * (cards.length > containNum ? i : 1) + 'px' }" translate="y-10 hover:y-0" :key="card.cardId"
+      :style="{ left: interval * (cards.length > containNum ? i : 1) + 'px' }" translate="y-10" :key="card.cardId"
         :type="card.type" :color="card.color" :icon="card.icon" :order="i" >
       </Card>
     </div>
