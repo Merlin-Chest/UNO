@@ -11,6 +11,7 @@ type CardNumberType<T extends number> = `number-${T}`;
 type CardOtherType = 'add-2' | 'add-4' | 'exchange' | 'palette' | 'ban'
 
 declare interface CardInfo {
+  cardId:number,
   icon: string,
   type: CardNumberType<ZeroToNine> | CardOtherType
   color:CardColor | string

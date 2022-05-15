@@ -1,6 +1,6 @@
 <template>
   <div v-if="visible" z-99 flex flex-col items-center justify="center" w="100%" h="100%" bg="#00000033">
-    <div flex flex-col justify="between" relative w="80" :bg="isDark ? 'black' : 'white'" b="rounded-4 gray-300 4 dashed">
+    <div flex flex-col justify="between" relative w="60 sm:80" :bg="isDark ? 'black' : 'white'" b="rounded-4 gray-300 4 dashed">
       <button absolute top="1" right="2" @click="handleClose">X</button>
       <div b="b-4 gray-300 dashed" min-h="10" p="2" c="gray-700 dark:gray-200">
         <slot name="title">

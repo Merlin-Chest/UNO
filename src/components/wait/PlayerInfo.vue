@@ -1,5 +1,5 @@
 <template>
-  <div w-42>{{ isOwner ? '房主' : '玩家' }}<slot></slot>
+  <div w-42 h-30>{{ isOwner ? '房主' : '玩家' }}<slot></slot>
     <div flex b="dashed 4 rounded-4 cool-gray-500" box="border" p-3 m-2 >
       <img width="50" height="50" :src="avatarSrc" b="rounded-2" />
       <div flex flex-col items-start text-3 m-l-1>

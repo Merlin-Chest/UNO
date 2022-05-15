@@ -1,5 +1,5 @@
 <template>
-  <div flex flex-wrap items-center>
+  <div  w="100%" overflow="scroll" flex flex-nowrap items-center>
     <EnemyPlayer v-for="player in players" :key="player.id" :name="player.name" :id="player.id" :cardNum="player.cards?.length" :last-card="player.lastCard" />
   </div>
 </template>

@@ -2,7 +2,7 @@
   <div flex w="100%" h="100%" flex-col items-center justify="between" overflow="hidden" m="auto">
     <enemy-area></enemy-area>
     <i w-25 h-25  :style="{ color: gameLastCard?.color+'66' || '#9a9a9a66',fontSize:'8rem' }" flex
-      items-center justify="center" :class="iconClass"></i>
+      items-center justify="center" :class="iconClass" relative left="7"></i>
     <CardArea w="100%" overflow="visible" @deal-card="handleDealCards"></CardArea>
   </div>
   <Teleport to="body">

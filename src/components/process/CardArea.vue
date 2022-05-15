@@ -1,21 +1,19 @@
 <template>
-  <div flex justify-around items-center h="26">
-    <div w="10%" flex flex-col justify-evenly h="100%">
+  <div flex flex-col justify-evenly items-center h="60 sm:80">
+    <div flex="nowrap inline" w="100%" h="40 sm:60" ref="cardArea">
+      <Card transition="duration-400" v-for="(card, i) in cards" :z="i" flex="none" relative :card-id="card.cardId"
+      :style="{ left: interval * (cards.length > containNum ? i : 1) + 'px' }" translate="y-10 hover:y-0" :key="card.cardId"
+        :type="card.type" :color="card.color" :icon="card.icon" :order="i" >
+      </Card>
+    </div>
+    <div flex justify-evenly w="100%">
       <button c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
         hover="bg-gray text-white" px-3 py-1 @click="handleLeave">离开房间</button>
-    </div>
-    <div flex box-border items-center justify="start" overflow="y-visible" w="70%" ref="cardArea">
-      <Card transition="duration-400" v-for="(card, i) in cards" 
-      :z="i" flex="none" relative :style="{left:interval*(cards.length > 5 ? i : 1)+'px'}" translate="hover:y--8" 
-      :key="card.type + card.color" :type="card.type" :color="card.color" :icon="card.icon" :order="i">
-        </Card>
-    </div>
-    <div w="10%" flex flex-col justify-evenly h="100%">
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
         transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleDealCards">出牌</button>
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
         transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleGetCard">取牌</button>
-    </div>
+    </div> 
   </div>
 </template>
 
@@ -34,10 +32,16 @@ const router = useRouter()
 const selectList = computed(() => roomStore.selectCards)
 
 const handleLeave = () => {
-  socketStore.leaveGame(roomStore.roomCode, userStore.getUserInfo()).then((res) => {
-    const { message } = res;
-    useNotify(message);
-    roomStore.cleanRoom(router);
+  Dialog({
+    title:'离开房间',
+    content:'是否确认？',
+    comfirm:()=>{
+      socketStore.leaveGame(roomStore.roomCode, userStore.getUserInfo()).then((res) => {
+        const { message } = res;
+        useNotify(message);
+        roomStore.cleanRoom(router);
+      })  
+    }
   })
 }
 
@@ -92,13 +96,19 @@ const handleGetCard = () => {
 
 let cardArea = $ref<HTMLElement>();
 
-const interval = computed(() => {
+const containNum =computed<number>(()=>{
+  if(!cardArea) return 0;
+  const cardWidth = cardArea?.children[0]?.clientWidth;
+  const cardAreaWidth = cardArea.clientWidth;
+  return Math.round(cardAreaWidth / cardWidth)
+});
+const interval = computed<number>(() => {
   if (!cards.value?.length || cards.value.length === 0 || !cardArea) return 0;
   const cardWidth = cardArea.children[0].clientWidth;
   const cardAreaWidth = cardArea.clientWidth;
   console.log('cardWidth:', cardWidth)
   console.log('cardAreaWidth:', cardAreaWidth)
-  if(cards.value.length < 5) return (cardAreaWidth - cardWidth * cards.value.length) /  2;
+  if (cards.value.length < 5) return (cardAreaWidth - cardWidth * cards.value.length) / 2;
   return -1 * (cardWidth * cards.value.length - cardAreaWidth) / (cards.value.length - 1);
 })
 
