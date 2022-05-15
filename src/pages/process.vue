@@ -83,6 +83,11 @@ onBeforeMount(() => {
     useNotify(message);
     roomStore.setRoomInfoProp<'lastCard'>('lastCard',Object.assign(roomStore.lastCard,{color:data}));
   })
+  socketStore.socket.on('DEAL_CARDS',(res)=>{
+    const {message,data}=res;
+    useNotify(message);
+    roomStore.setUserCards(data)
+  })
 })
 
 onUnmounted(() => {
@@ -91,6 +96,7 @@ onUnmounted(() => {
   socketStore.socket.off('UPDATE_PLAYER_LIST');
   socketStore.socket.off('SELECT_COLOR');
   socketStore.socket.off('COLOR_IS_CHANGE');
+  socketStore.socket.off('DEAL_CARDS');
 })
 
 </script>

@@ -7,7 +7,6 @@ declare interface RoomData {
 declare interface PlayerInfo extends UserInfo {
   socketId:string,
   lastCard:CardInfo | null,
-  cardNum:number,
   cards:CardInfo[] | null
 }
 
