@@ -2,6 +2,9 @@
 
 无需安装任何APP! 你可以在网页上直接与其他的伙伴联机玩经典卡牌游戏UNO!
 
+### 欢迎共建!!!
+有意者可以私聊vx: `Merlin_nil218`
+
 ## 技术栈
 
 前端：Vue3 + Typescript + WebSocket + Socket.io
@@ -40,8 +43,3 @@
     - [x] 游戏结束
     - [x] 生成排名
   - [ ] ... 
-
-### 项目模板
-
-[Antfu/vitesse-lite](https://github.com/antfu/vitesse-lite/generate).
-
