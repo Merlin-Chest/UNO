@@ -1,12 +1,13 @@
 <template>
   <div flex w="100%" h="100%" flex-col items-center justify="between" m="auto">
     <enemy-area></enemy-area>
-    <i w-25 h-25  :style="{ color: gameLastCard?.color+'66' || '#9a9a9a66',fontSize:'8rem' }" flex
-      items-center justify="center" :class="iconClass" relative left="7"></i>
+    <i w-25 h-25 :style="{ color: gameLastCard?.color + '66' || '#9a9a9a66', fontSize: '8rem' }" flex items-center
+      justify="center" :class="iconClass" relative left="7"></i>
     <CardArea w="100%" overflow="visible" @deal-card="handleDealCards"></CardArea>
   </div>
   <Teleport to="body">
-    <Dialog absolute top="0" :visible="showColorPicker" title="选择颜色" @close="showColorPicker = false" @confirm="submitColor" :show-cancel='false'>
+    <Dialog absolute top="0" :visible="showColorPicker" title="选择颜色" @close="showColorPicker = false"
+      @confirm="submitColor" :show-cancel='false'>
       <div flex flex-wrap items-center text-center justify="between">
         <label w="50%">
           <input type="radio" value="#FF6666" v-model="selectColor">
@@ -15,7 +16,7 @@
         <label w="50%">
           <input type="radio" value="#FFCC33" v-model="selectColor">
           黄色
-        </label >
+        </label>
         <label w="50%">
           <input type="radio" value="#99CC66" v-model="selectColor">
           绿色
@@ -24,8 +25,8 @@
           <input type="radio" value="#99CCFF" v-model="selectColor">
           蓝色
         </label>
-    </div>
-    </Dialog >
+      </div>
+    </Dialog>
   </Teleport>
 </template>
 <script setup lang="ts">
@@ -43,8 +44,8 @@ const iconClass = computed(() => `i ${roomStore.lastCard?.icon || 'pixelarticons
 
 const selectColor = ref<CardColor>('#FF6666')
 const showColorPicker = ref(false)
-const submitColor = ()=>{
-  socketStore.submitColor(selectColor.value,roomStore.roomCode);
+const submitColor = () => {
+  socketStore.submitColor(selectColor.value, roomStore.roomCode);
   selectColor.value = '#FF6666'
 }
 
@@ -73,18 +74,18 @@ onBeforeMount(() => {
     roomStore.setRoomInfoProp<'endTime'>('endTime', endTime);
     router.push('/end')
   })
-  socketStore.socket.on('SELECT_COLOR',(res)=>{
-    const {message} = res;
+  socketStore.socket.on('SELECT_COLOR', (res) => {
+    const { message } = res;
     useNotify(message);
     showColorPicker.value = true;
   })
-  socketStore.socket.on('COLOR_IS_CHANGE',(res)=>{
-    const {message,data} = res;
+  socketStore.socket.on('COLOR_IS_CHANGE', (res) => {
+    const { message, data } = res;
     useNotify(message);
-    roomStore.setRoomInfoProp<'lastCard'>('lastCard',Object.assign(roomStore.lastCard,{color:data}));
+    roomStore.setRoomInfoProp<'lastCard'>('lastCard', Object.assign(roomStore.lastCard as CardInfo, { color: data }));
   })
-  socketStore.socket.on('DEAL_CARDS',(res)=>{
-    const {message,data}=res;
+  socketStore.socket.on('DEAL_CARDS', (res) => {
+    const { message, data } = res;
     useNotify(message);
     roomStore.setUserCards(data)
   })
