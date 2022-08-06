@@ -2,7 +2,7 @@ FROM node:14-alpine as builder
 
 WORKDIR /code
 
-RUN npm install pnpm -g
+RUN npm install pnpm@7.8 -g
 
 ADD package.json pnpm-lock.yaml /code/
 RUN pnpm i
