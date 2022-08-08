@@ -8,4 +8,6 @@ ADD package.json pnpm-lock.yaml /code/
 RUN pnpm i
 
 ADD . /code/
-RUN pnpm docker-deploy
+RUN pnpm build
+
+CMD node ./dist/index.js

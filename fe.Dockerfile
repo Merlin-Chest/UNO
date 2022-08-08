@@ -4,10 +4,10 @@ WORKDIR /code
 
 RUN npm install pnpm -g
 
-ADD ./UNO-client/package.json ./UNO-client/pnpm-lock.yaml /code/
+ADD package.json pnpm-lock.yaml /code/
 RUN pnpm i
 
-ADD ./UNO-client /code/
+ADD . /code/
 RUN pnpm build
 
 FROM nginx:alpine
