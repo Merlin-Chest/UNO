@@ -3,7 +3,8 @@ name: docker dev deploy
 on:
   push:
     branches: [ "dev" ]
-
+  workflow_dispatch:
+    
 jobs:
   build:
   # 该 JOB 在自建 Runner 中进行运行
