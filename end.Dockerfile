@@ -4,10 +4,10 @@ WORKDIR /code
 
 RUN npm install pnpm -g
 
-ADD package.json pnpm-lock.yaml /code/
+ADD ./UNO-server/package.json ./UNO-server/pnpm-lock.yaml /code/
 RUN pnpm i
 
-ADD . /code/
+ADD ./UNO-server /code/
 RUN pnpm build 
 
-CMD node index.js
+CMD node ./dist/index.js

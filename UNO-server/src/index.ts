@@ -8,7 +8,6 @@ const app = express();
 const httpServer = createServer(app);
 const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents>(httpServer, {
   serveClient: false,
-  path: '/socket.io'
 });
 
 io.on('connection', (socket) => {
