@@ -4,14 +4,25 @@ services:
   uno:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: fe.Dockerfile
+    ports:
+      - "8088:80"
     labels:
       # 设置Host 为 localhost 进行域名访问
       - traefik.http.routers.uno.rule=Host(`uno.merlin218.top`)
       # 开启HTTPS
       - traefik.http.routers.uno.tls=true
       - traefik.http.routers.uno.tls.certresolver=le
-
+  server:
+    build:
+      context: .
+      dockerfile: end.Dockerfile
+      # labels:
+      # 设置Host 为 localhost 进行域名访问
+      # - traefik.http.routers.uno-server.rule=Host(`uno.merlin218.top`)
+      # 开启HTTPS
+      # - traefik.http.routers.uno-server.tls=true
+      # - traefik.http.routers.uno-server.tls.certresolver=le
 networks:
   default:
     external:
