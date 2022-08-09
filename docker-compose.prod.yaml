@@ -4,7 +4,7 @@ services:
   uno:
     build:
       context: .
-      dockerfile: fe.Dockerfile
+      dockerfile: fe.prod.Dockerfile
     ports:
       - "8088:80"
     labels:
