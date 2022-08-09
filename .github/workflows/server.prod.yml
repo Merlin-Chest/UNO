@@ -1,0 +1,14 @@
+name: docker prod deploy
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+  # 该 JOB 在自建 Runner 中进行运行
+    runs-on: self-hosted
+    steps:
+    # 切出代码，使用该 Action 将可以拉取最新代码
+      - uses: actions/checkout@v2
+      - run: docker-compose up -f docker-compose.prod.yaml --build -d
