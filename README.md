@@ -7,9 +7,9 @@
 
 ## 技术栈
 
-前端：Vue3 + Typescript + socket.io
+前端：Vue3 + Typescript + socket.io-client
 
-后端：Express + Typescript + socket.io-client
+后端：Express + Typescript + socket.io
 
 ## 开发进度
 
