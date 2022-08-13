@@ -1,0 +1,15 @@
+name: docker dev deploy
+
+on:
+  push:
+    branches: [ "dev" ]
+  workflow_dispatch:
+    
+jobs:
+  build:
+  # 该 JOB 在自建 Runner 中进行运行
+    runs-on: self-hosted
+    steps:
+    # 切出代码，使用该 Action 将可以拉取最新代码
+      - uses: actions/checkout@v2
+      - run: docker-compose -f docker-compose.dev.yaml up --build -d
