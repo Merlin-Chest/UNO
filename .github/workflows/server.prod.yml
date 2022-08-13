@@ -12,4 +12,4 @@ jobs:
     steps:
     # 切出代码，使用该 Action 将可以拉取最新代码
       - uses: actions/checkout@v2
-      - run: docker-compose up -f docker-compose.prod.yaml --build -d
+      - run: docker-compose -f docker-compose.prod.yaml up --build -d
