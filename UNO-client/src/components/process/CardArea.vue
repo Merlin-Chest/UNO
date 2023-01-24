@@ -1,10 +1,14 @@
 <template>
-  <div flex flex-col justify-evenly items-center h="60 sm:80" >
-    <div flex="nowrap inline items-center" w="100%" h="40 sm:60" ref="cardArea">
-      <Card transition="duration-400" v-for="(card, i) in cards" :z="i" flex="none" relative :card-id="card.cardId"
-      :style="{ left: interval * (cards.length > containNum ? i : 1) + 'px' }" :key="card.cardId"
-        :type="card.type" :color="card.color" :icon="card.icon" :order="i" @click="handleClickCard(card,i)" 
-         :translate="isActive(i) ? 'y-0' : 'y-8'">
+  <div flex flex-col justify-evenly items-center h="60 sm:80">
+    <div w="80%" h="40 sm:60" relative ref="cardArea">
+      <Card transition="duration-100" v-for="(card, i) in cards" :z="i" flex="none" :card-id="card.cardId" :style="{
+        position: 'absolute',
+        top: '0',
+        left: '50%',
+        transform: `rotate(${card.rotate}deg) translate(-50%, ${isActive(i) ? '-30px' : '0'})`,
+        transformOrigin: card.transformOrigin
+      }" :key="card.cardId" :type="card.type" :color="card.color" :icon="card.icon" :order="i"
+        @click="handleClickCard(card, i)">
       </Card>
     </div>
     <div flex justify-evenly w="100%">
@@ -14,7 +18,7 @@
         transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleDealCards">出牌</button>
       <button v-show="isInTurn" c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent"
         transition="duration-400" hover="bg-gray text-white" px-3 py-1 @click="handleGetCard">取牌</button>
-    </div> 
+    </div>
   </div>
 </template>
 
@@ -28,42 +32,61 @@ const emit = defineEmits(['dealCard'])
 const socketStore = useSocketStore()
 const roomStore = useRoomStore();
 const userStore = useUserStore()
-const cards = computed(() => roomStore.userCards)
+let cardArea = $ref<HTMLElement>();
+
+const cards = computed(() => {
+  const tangle = Math.atan(cardArea?.clientWidth / 2 / cardArea?.clientHeight) * 180 / Math.PI;
+  let space = tangle / (roomStore.userCards.length - 1)
+  if (space > 12) space = 12
+  return roomStore.userCards.map((item, index) => {
+    return {
+      rotate: (index - Math.floor(roomStore.userCards.length / 2)) * space,
+      transformOrigin: `0 ${cardArea?.clientWidth / 2}px`,
+      ...item,
+    }
+  })
+})
 const router = useRouter()
 const selectList = computed(() => roomStore.selectCards)
 
 const handleLeave = () => {
   Dialog({
-    title:'离开房间',
-    content:'是否确认？',
-    comfirm:()=>{
+    title: '离开房间',
+    content: '是否确认？',
+    comfirm: () => {
       socketStore.leaveGame(roomStore.roomCode, userStore.getUserInfo()).then((res) => {
         const { message } = res;
         useNotify(message);
         roomStore.cleanRoom(router);
-      })  
+      })
     }
   })
 }
 
-const isActive = computed(()=>{
-  return (i:number)=>{
+const isActive = computed(() => {
+  return (i: number) => {
     return roomStore.selectCards.has(i);
   }
 })
 
-const handleClickCard =(card:CardInfo,i:number)=>{
-  if(!isInTurn.value){
+const handleClickCard = (card: CardInfo, i: number) => {
+  if (!isInTurn.value) {
     useNotify('不在出牌阶段')
+    if (roomStore.selectCards.has(i)) {
+      roomStore.unSelectCard(i)
+    }
     return;
   }
   if (!useCheckCard(card)) {
     useNotify('该牌不能出')
+    if (roomStore.selectCards.has(i)) {
+      roomStore.unSelectCard(i)
+    }
     return;
   }
-  if(roomStore.selectCards.has(i)){
+  if (roomStore.selectCards.has(i)) {
     roomStore.unSelectCard(i)
-  }else{
+  } else {
     roomStore.selectCard(i)
   }
 }
@@ -117,23 +140,23 @@ const handleGetCard = () => {
 
 
 
-let cardArea = $ref<HTMLElement>();
 
-const containNum =computed<number>(()=>{
-  if(!cardArea) return 0;
-  const cardWidth = cardArea?.children[0]?.clientWidth;
-  const cardAreaWidth = cardArea.clientWidth;
-  return Math.round(cardAreaWidth / cardWidth)
-});
-const interval = computed<number>(() => {
-  if (!cards.value?.length || cards.value.length === 0 || !cardArea) return 0;
-  const cardWidth = cardArea.children[0].clientWidth;
-  const cardAreaWidth = cardArea.clientWidth;
-  if (cards.value.length < containNum.value) return (cardAreaWidth - cardWidth * cards.value.length) / 2;
-  return -1 * (cardWidth * cards.value.length - cardAreaWidth) / (cards.value.length - 1);
-})
+// const containNum = computed<number>(() => {
+//   if (!cardArea) return 0;
+//   const cardWidth = cardArea?.children[0]?.clientWidth;
+//   const cardAreaWidth = cardArea.clientWidth;
+//   return Math.round(cardAreaWidth / cardWidth)
+// });
+// const interval = computed<number>(() => {
+//   if (!cards.value?.length || cards.value.length === 0 || !cardArea) return 0;
+//   const cardWidth = cardArea.children[0].clientWidth;
+//   const cardAreaWidth = cardArea.clientWidth;
+//   if (cards.value.length < containNum.value) return (cardAreaWidth - cardWidth * cards.value.length) / 2;
+//   return -1 * (cardWidth * cards.value.length - cardAreaWidth) / (cards.value.length - 1);
+// })
 
 </script>
 
 <style scoped>
+
 </style>

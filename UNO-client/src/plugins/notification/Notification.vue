@@ -1,13 +1,7 @@
 <template>
   <transition name="fade" @after-leave="afterLeave" @after-enter="afterEnter">
-    <div
-      v-show="visible"
-      ref="root"
-      class="notification"
-      :style="styleObj"
-      @mouseenter="clearTimer"
-      @mouseleave="createTimer"
-    >
+    <div v-show="visible" ref="root" class="notification" :style="styleObj" @mouseenter="clearTimer"
+      @mouseleave="createTimer">
       <span class="content">{{ content }}</span>
       <a class="btn" @click="handleClose">{{ btn }}</a>
     </div>
@@ -22,7 +16,7 @@ import {
   toRefs,
   computed,
   onMounted,
-  onBeforeUnmount,StyleValue
+  onBeforeUnmount, StyleValue
 } from 'vue';
 
 export default defineComponent({
@@ -133,24 +127,33 @@ export default defineComponent({
   position: relative;
   font-size: 16px;
 }
+
 .content {
   padding: 0;
 }
+
 .btn {
-  padding:0;
+  padding: 0;
   cursor: pointer;
   border-radius: 20px;
-  position:absolute;
-  right:16px;
-  top:8px;
-  font-size: 10px;
+  position: absolute;
+  right: 16px;
+  top: 8px;
+  font-size: .4rem;
   background-color: transparent;
-  color:gray
+  color: gray;
+  padding: .2rem .4rem;
 }
+
+.btn:hover {
+  background: #ddd;
+}
+
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.5s;
 }
+
 .fade-enter,
 .fade-leave-to {
   opacity: 0;
