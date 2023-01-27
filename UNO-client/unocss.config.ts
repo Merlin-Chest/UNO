@@ -21,7 +21,6 @@ export default defineConfig({
       warn: true,
       collections: {
         fa6Solid: () => import('@iconify-json/fa6-solid/icons.json').then(i => {
-          console.log(i);
           return i as any
         }),
       }

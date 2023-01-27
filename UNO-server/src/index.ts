@@ -1,36 +1,56 @@
-import express from 'express';
-import { createServer } from 'http';
-import { Server } from 'socket.io';
+import type { ClientEvents } from 'types/server';
+import EventEmitter from 'events';
+
+import WebSocket, { WebSocketServer } from 'ws';
 import controllers from './controllers';
-import type { ControllerKeys, ClientToServerEvents, InterServerEvents, ServerToClientEvents } from './types/server';
 
-const app = express();
-const httpServer = createServer(app);
-const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents>(httpServer, {
-  serveClient: false,
-});
+const wss = new WebSocketServer({ port: 3000 });
 
-io.on('connection', (socket) => {
-  console.log(`${socket.id}:连接成功`);
-  Object.keys(controllers).forEach((key) => {
-    socket.on(key as any, async (args: any) => {
-      console.log(key, ':', args);
-      if (args) {
-        const { type, data } = args;
-        const res = await controllers[type as ControllerKeys](data, socket, io);
-        if (res) {
-          console.log(res.type, ':', res);
-          socket.emit(res.type as any, res as any);
-        }
-      }
-    });
+export const eventBus = new EventEmitter();
+
+// 监听事件列表
+const events: ClientEvents[] = [
+  'CREATE_ROOM',
+  'JOIN_ROOM',
+  'LEAVE_ROOM',
+  'DISSOLVE_ROOM',
+  'CREATE_USER',
+  'START_GAME',
+  'OUT_OF_THE_CARD',
+  'GET_ONE_CARD',
+  'NEXT_TURN',
+  'SUBMIT_COLOR',
+  'UNO'
+]
+
+let currentClient: WebSocket.WebSocket | null = null;
+
+// 注册事件
+events.forEach((key) => {
+  eventBus.on(key, (data) => controllers[key](data, currentClient, wss))
+})
+
+wss.on('connection', function connection(ws) {
+  // 监听消息
+  ws.on('message', function incoming(message) {
+    const { type, data } = JSON.parse(message.toString())
+    currentClient = ws;
+    eventBus.emit(type, data)
+    currentClient = null;
   });
-  socket.on('error', (error) => {
+
+  // 监听错误
+  ws.on('error', (error) => {
     console.error('error:', error);
   });
-  socket.on('disconnect', () => {
-    console.log(`${socket.id}:断开连接`)
-  })
-});
 
-httpServer.listen(3000);
+  // 监听断开
+  ws.on('disconnect', () => {
+    console.log(`${ws.url}:断开连接`)
+  })
+
+  //发送欢迎标语👏
+  ws.send(JSON.stringify({
+    message: '欢迎来到UNO世界！',
+  }))
+});

@@ -74,18 +74,20 @@ const handleClick = () => {
     useNotify('请输入' + roomTip.value)
     return
   }
-  socketStore.createUser(userName).then((res) => {
-    const { data: user } = res
-    userStore.setUserInfo(user)
-    return socketStore[roomType.value](roomAns, userStore.getUserInfo())
-  }).then((res) => {
-    const { data: roomInfo, message } = res
-    useNotify(message)
+  socketStore.createUser(userName).then((user) => {
+    if (user) {
+      userStore.setUserInfo(user)
+      return socketStore[roomType.value](roomAns, userStore.getUserInfo())
+    }
+    return Promise.reject('创建玩家失败');
+  }).then((roomInfo) => {
     if (roomInfo) {
       roomStore.setRoomInfo(roomInfo)
-      router.push('/wait')
+      router.push('/wait');
+      return;
     }
-  });
+    return Promise.reject('创建房间失败');
+  })
 }
 
 </script>
