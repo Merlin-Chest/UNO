@@ -139,9 +139,14 @@ export default defineComponent({
   position: absolute;
   right: 16px;
   top: 8px;
-  font-size: 10px;
+  font-size: .4rem;
   background-color: transparent;
-  color: gray
+  color: gray;
+  padding: .2rem .4rem;
+}
+
+.btn:hover {
+  background: #ddd;
 }
 
 .fade-enter-active,

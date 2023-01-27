@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { Router } from 'vue-router';
+import { RoomInfo, PlayerInfo } from '~/types/room';
 
 export const useRoomStore = defineStore('game', {
   state: () => {
@@ -17,38 +18,47 @@ export const useRoomStore = defineStore('game', {
     userCards: (state) => state._userCards,
     roomCode: (state) => state._roomInfo.roomCode,
     gameCards: (state) => state._roomInfo.gameCards,
-    order:(state)=>state._roomInfo.order,
-    startTime:(state)=>state._roomInfo.startTime,
-    endTime:(state)=>state._roomInfo.endTime,
-    winnerOrder:(state)=>state._roomInfo.winnerOrder,
-    lastCard:(state)=>state._roomInfo.lastCard,
-    selectCards: (state)=>state._selectCards
+    order: (state) => state._roomInfo.order,
+    startTime: (state) => state._roomInfo.startTime,
+    endTime: (state) => state._roomInfo.endTime,
+    winnerOrder: (state) => state._roomInfo.winnerOrder,
+    lastCard: (state) => state._roomInfo.lastCard,
+    selectCards: (state) => state._selectCards
   },
   actions: {
     setRoomInfo(roomInfo: RoomInfo) {
       this._roomInfo = roomInfo
     },
-    setRoomInfoProp<T extends keyof RoomInfo>(key: T,val: RoomInfo[T]){
+    setRoomInfoProp<T extends keyof RoomInfo>(key: T, val: RoomInfo[T]) {
       this._roomInfo[key] = val;
     },
     updatePlayers(players: PlayerInfo[]) {
       this._roomInfo.players = players
     },
-    setUserCards(cards:CardInfo[]){
+    changePlayerUNOStatus({ playerId, playerName, unoStatus }: {
+      playerId: string, playerName: string, unoStatus: boolean
+    }) {
+      const player = this._roomInfo.players.find(player => player.id === playerId && player.name === playerName)
+      if (player) {
+        player.uno = unoStatus
+      }
+    },
+
+    setUserCards(cards: CardInfo[]) {
       this._userCards = cards
     },
-    selectCard (i: number) {
+    selectCard(i: number) {
       if (i < 0 || i >= this._userCards.length) return;
       this._selectCards.add(i);
     },
-    unSelectCard(i: number){
+    unSelectCard(i: number) {
       if (i < 0 || i >= this._userCards.length) return;
       this._selectCards.delete(i)
     },
-    clearSelectCards(){
+    clearSelectCards() {
       this._selectCards = new Set()
     },
-    cleanRoom(router:Router) {
+    cleanRoom(router: Router) {
       router.push('/')
       this._userCards = [];
       this._roomInfo = {} as RoomInfo;

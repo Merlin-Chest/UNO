@@ -20,7 +20,7 @@
       <div v-else m-b-3>等待玩家进入...</div>
       <button m-l-3 c-gray text="3.5" b="gray rounded-10 3 dashed hover:transparent" transition="duration-400"
         hover="bg-gray text-white" px-3 py-1 @click="dissolveOrLeaveRoom">
-        {{ isOwner ? '解散房间' : '退出房间' }}
+        {{ isOwner? '解散房间': '退出房间' }}
       </button>
     </div>
   </div>
@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
 import { useRoomStore } from '~/store/room';
-import useSocketStore from '~/store/socket';
+import useSocketStore, { eventBus } from '~/store/socket';
 import PlayerInfo from '~/components/wait/PlayerInfo.vue';
 import useUserStore from '~/store/user';
 import { useClipboard } from '@vueuse/core'
@@ -47,7 +47,7 @@ const isOwner = computed(() => roomStore?.owner?.id === userStore?.id && roomSto
 
 const { copy } = useClipboard({ source: roomCode })
 
-const copyCode =()=>{
+const copyCode = () => {
   copy();
   useNotify('复制成功')
 }
@@ -58,18 +58,13 @@ const socketStore = useSocketStore();
 
 onBeforeMount(() => {
   // 监听玩家列表变化
-  socketStore.socket.on('UPDATE_PLAYER_LIST', (res) => {
-    const { data: players, message } = res;
-    useNotify(message);
+  eventBus.on('UPDATE_PLAYER_LIST', (players) => {
     roomStore.updatePlayers(players)
   })
 
   // 监听游戏是否开始
-  socketStore.socket.on('GAME_IS_START', (res) => {
-    const { data: { roomInfo, userCards }, message } = res;
-    useNotify(message);
-    socketStore.socket.once('NEXT_TURN', (res) => {
-      const { data: { lastCard, order, players } } = res
+  eventBus.on('GAME_IS_START', ({ roomInfo, userCards }) => {
+    eventBus.once('NEXT_TURN', ({ lastCard, order, players }) => {
       roomStore.setRoomInfoProp<'lastCard'>('lastCard', lastCard);
       roomStore.setRoomInfoProp<'order'>('order', order);
       roomStore.setRoomInfoProp<'players'>('players', players);
@@ -81,24 +76,19 @@ onBeforeMount(() => {
 
 
   // 监听房间是否解散
-  socketStore.socket.on('RES_DISSOLVE_ROOM', (res) => {
-    const { message } = res;
-    useNotify(message);
+  eventBus.on('RES_DISSOLVE_ROOM', () => {
     roomStore.cleanRoom(router);
   })
 })
 
 onUnmounted(() => {
-  socketStore.socket.off('GAME_IS_START');
-  socketStore.socket.off('RES_DISSOLVE_ROOM');
+  eventBus.removeAllListeners('GAME_IS_START');
+  eventBus.removeAllListeners('RES_DISSOLVE_ROOM');
 })
 
 // 开始游戏
 const startGame = () => {
-  socketStore.startGame(roomCode.value).then((res) => {
-    const { message } = res;
-    useNotify(message)
-  })
+  socketStore.startGame(roomCode.value)
 }
 
 // 解散或离开房间
@@ -110,9 +100,7 @@ const dissolveOrLeaveRoom = () => {
       if (isOwner.value) {
         socketStore.dissolveGame(roomCode.value)
       } else {
-        socketStore.leaveGame(roomCode.value, userStore.getUserInfo()).then((res) => {
-          const { message } = res;
-          useNotify(message)
+        socketStore.leaveGame(roomCode.value, userStore.getUserInfo()).then(() => {
           roomStore.cleanRoom(router);
         })
       }
@@ -123,4 +111,5 @@ const dissolveOrLeaveRoom = () => {
 </script>
 
 <style scoped>
+
 </style>

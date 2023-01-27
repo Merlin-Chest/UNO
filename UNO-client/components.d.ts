@@ -10,9 +10,11 @@ declare module '@vue/runtime-core' {
     EnemyArea: typeof import('./src/components/process/EnemyArea.vue')['default']
     EnemyPlayer: typeof import('./src/components/process/EnemyPlayer.vue')['default']
     Footer: typeof import('./src/components/Footer.vue')['default']
+    MdiCards: typeof import('./src/components/icons/MdiCards.vue')['default']
     PlayerInfo: typeof import('./src/components/wait/PlayerInfo.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    UimSlack: typeof import('./src/components/icons/UimSlack.vue')['default']
   }
 }
 

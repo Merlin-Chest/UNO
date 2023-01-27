@@ -12,19 +12,25 @@ export type OptionsType = {
   showCancel?: boolean
 };
 
-const removeInstance = (app: App<Element>, container: Element) => {
+function configContainer() {
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  container.id = 'dialog';
+  container.style.width = '100vw';
+  container.style.height = '100vh';
+  container.style.position = 'absolute';
+  container.style.top = '0';
+  return container;
+}
+
+
+const removeInstance = (app: App<Element>, container: HTMLElement) => {
   app.unmount()
   document.body.removeChild(container)
 }
 
 const Dialog = (options: OptionsType): void => {
-  const container = document.createElement('div');
-  document.body.appendChild(container);
-  container.style.width = '100vw'
-  container.style.height = '100vh'
-  container.style.position = 'absolute'
-  container.style.top = '0';
-
+  const container = configContainer();
   const app = createApp({
     methods: {
       closeDialog() {
@@ -52,4 +58,5 @@ const Dialog = (options: OptionsType): void => {
 };
 
 export default Dialog;
+
 

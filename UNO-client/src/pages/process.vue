@@ -30,14 +30,13 @@
   </Teleport>
 </template>
 <script setup lang="ts">
-import { useNotify } from '~/composables';
 import { useRoomStore } from '~/store/room';
-import useSocketStore from '~/store/socket';
+import useSocketStore, { eventBus } from '~/store/socket';
 
 const router = useRouter()
 
 const socketStore = useSocketStore();
-const roomStore = useRoomStore()
+const roomStore = useRoomStore();
 
 const gameLastCard = computed(() => roomStore.lastCard)
 const iconClass = computed(() => `i ${roomStore.lastCard?.icon || 'pixelarticons:downasaur'}`)
@@ -50,9 +49,7 @@ const submitColor = () => {
 }
 
 const handleDealCards = (cardsIndex: Set<number>) => {
-  socketStore.outOfCard(Array.from(cardsIndex), roomStore.roomCode).then((res) => {
-    const { message, data } = res
-    useNotify(message);
+  socketStore.outOfCard(Array.from(cardsIndex), roomStore.roomCode).then((data) => {
     if (data) {
       roomStore.setUserCards(data)
     }
@@ -60,44 +57,38 @@ const handleDealCards = (cardsIndex: Set<number>) => {
 }
 
 onBeforeMount(() => {
-  socketStore.socket.on('NEXT_TURN', (res) => {
-    const { message, data: { lastCard, order, players } } = res
-    useNotify(message);
+  eventBus.on('NEXT_TURN', ({ lastCard, order, players }) => {
     roomStore.setRoomInfoProp<'lastCard'>('lastCard', lastCard);
     roomStore.setRoomInfoProp<'order'>('order', order);
     roomStore.setRoomInfoProp<'players'>('players', players);
   })
-  socketStore.socket.on('GAME_IS_OVER', (res) => {
-    const { message, data: { winnerOrder, endTime } } = res
-    useNotify(message);
+  eventBus.on('GAME_IS_OVER', ({ winnerOrder, endTime }) => {
     roomStore.setRoomInfoProp<'winnerOrder'>('winnerOrder', winnerOrder);
     roomStore.setRoomInfoProp<'endTime'>('endTime', endTime);
     router.push('/end')
   })
-  socketStore.socket.on('SELECT_COLOR', (res) => {
-    const { message } = res;
-    useNotify(message);
+  eventBus.on('SELECT_COLOR', () => {
     showColorPicker.value = true;
   })
-  socketStore.socket.on('COLOR_IS_CHANGE', (res) => {
-    const { message, data } = res;
-    useNotify(message);
+  eventBus.on('COLOR_IS_CHANGE', (data) => {
     roomStore.setRoomInfoProp<'lastCard'>('lastCard', Object.assign(roomStore.lastCard as CardInfo, { color: data }));
   })
-  socketStore.socket.on('DEAL_CARDS', (res) => {
-    const { message, data } = res;
-    useNotify(message);
+  eventBus.on('RES_DEAL_CARDS', (data) => {
     roomStore.setUserCards(data)
+  })
+  eventBus.on('CHANGE_UNO_STATUS', (data) => {
+    roomStore.changePlayerUNOStatus(data)
   })
 })
 
-onUnmounted(() => {
-  socketStore.socket.off('NEXT_TURN')
-  socketStore.socket.off('GAME_IS_OVER')
-  socketStore.socket.off('UPDATE_PLAYER_LIST');
-  socketStore.socket.off('SELECT_COLOR');
-  socketStore.socket.off('COLOR_IS_CHANGE');
-  socketStore.socket.off('DEAL_CARDS');
+onBeforeUnmount(() => {
+  eventBus.removeAllListeners('NEXT_TURN')
+  eventBus.removeAllListeners('GAME_IS_OVER')
+  eventBus.removeAllListeners('UPDATE_PLAYER_LIST');
+  eventBus.removeAllListeners('SELECT_COLOR');
+  eventBus.removeAllListeners('COLOR_IS_CHANGE');
+  eventBus.removeAllListeners('DEAL_CARDS');
+  eventBus.removeAllListeners('CHANGE_UNO_STATUS');
 })
 
 </script>

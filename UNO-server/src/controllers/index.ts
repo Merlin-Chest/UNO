@@ -1,9 +1,9 @@
-import type { ControllerKeys, Controllers, ServerType, SocketType } from '../types/server';
+import type { ClientToServerEvents } from 'types/server';
 import gameControllers from './game';
 import roomControllers from './room';
 import userControllers from './user';
 
-const controllers:Controllers<ControllerKeys, SocketType, ServerType> = {
+const controllers: ClientToServerEvents = {
   ...roomControllers,
   ...userControllers,
   ...gameControllers

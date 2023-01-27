@@ -1,25 +1,26 @@
-import type { Controllers, ClientUserKeys, ServerType, SocketType } from '~/types/server';
+import type { ClientToServerEvents, ClientUserEvents } from 'types/server';
 import { createUser, userCollection } from '../services/user';
 import { has, set } from '../utils/customCRUD';
+import { send } from './room';
 
-const userControllers: Controllers<ClientUserKeys, SocketType, ServerType> = {
-  CREATE_USER:async (args) => {
-    const { id, name } = args as UserInfo;
+const userControllers: Pick<ClientToServerEvents, ClientUserEvents> = {
+  CREATE_USER: (data, ws) => {
+    const { id, name } = data;
     const key = (id + name);
     if (has(userCollection, key)) {
-      return {
+      return send(ws, {
         message: '人员已存在，请重新输入昵称',
-        data: false,
+        data: null,
         type: 'RES_CREATE_USER',
-      };
+      })
     }
     let userInfo;
-    set(userCollection, key, userInfo = createUser(args));
-    return {
+    set(userCollection, key, userInfo = createUser(data));
+    send(ws, {
       message: '玩家信息创建成功',
       data: userInfo,
       type: 'RES_CREATE_USER',
-    };
+    })
   },
 };
 
