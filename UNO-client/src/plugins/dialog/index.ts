@@ -1,7 +1,7 @@
 import { Plugin, App } from 'vue';
 import Dialog from './Dialog.vue';
 
-const install = (app: App)=>{
+const install = (app: App) => {
   app.component('Dialog', Dialog);
   return app;
 }
