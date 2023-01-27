@@ -1,4 +1,4 @@
-import type { ClientEvents } from 'types/server';
+import type { ClientEvents } from './types/server';
 import EventEmitter from 'events';
 
 import WebSocket, { WebSocketServer } from 'ws';
